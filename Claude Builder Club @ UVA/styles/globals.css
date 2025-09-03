@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    background-color: rgb(240, 239, 234);
+    color: rgb(20, 20, 19);
+    font-family: 'Poppins', sans-serif;
+  }
+}
+
+@layer components {
+  .coral-gradient {
+    background: linear-gradient(135deg, rgb(204, 120, 92) 0%, rgba(204, 120, 92, 0.8) 100%);
+  }
+  
+  .sage-gradient {
+    background: linear-gradient(135deg, rgb(130, 129, 121) 0%, rgba(130, 129, 121, 0.8) 100%);
+  }
+  
+  .cream-gradient {
+    background: linear-gradient(135deg, rgb(240, 239, 234) 0%, rgba(240, 239, 234, 0.8) 100%);
+  }
+  
+  .charcoal-gradient {
+    background: linear-gradient(135deg, rgb(20, 20, 19) 0%, rgba(20, 20, 19, 0.9) 100%);
+  }
+  
+  .glass-card {
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    border: 1px solid rgba(204, 120, 92, 0.1);
+    box-shadow: 0 8px 32px rgba(20, 20, 19, 0.08);
+  }
+  
+  .coral-button {
+    @apply bg-coral hover:bg-coral/90 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl;
+  }
+  
+  .sage-button {
+    @apply bg-sage hover:bg-sage/90 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl;
+  }
+}
