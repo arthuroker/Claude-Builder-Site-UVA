@@ -60,6 +60,113 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Join a Community Section */}
+      <section className="py-40 px-4 animate-fade-scale relative overflow-hidden" style={{ backgroundColor: '#e5e4df', minHeight: '850px' }}>
+        {/* Twinkling Parallax Claude Logos */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Curved path movements - each logo follows a unique curved trajectory */}
+          <div className="absolute animate-curve-path-1 opacity-7" style={{ animationDelay: '0.2s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-8 h-8 animate-pulse-gentle" />
+          </div>
+          <div className="absolute animate-curve-path-2 opacity-9" style={{ animationDelay: '1.5s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-12 h-12 animate-pulse-gentle" style={{ animationDelay: '0.8s' }} />
+          </div>
+          <div className="absolute animate-curve-path-3 opacity-6" style={{ animationDelay: '3.1s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-6 h-6 animate-pulse-gentle" style={{ animationDelay: '1.2s' }} />
+          </div>
+          <div className="absolute animate-curve-path-4 opacity-8" style={{ animationDelay: '0.7s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-14 h-14 animate-pulse-gentle" style={{ animationDelay: '2.1s' }} />
+          </div>
+          <div className="absolute animate-curve-path-5 opacity-5" style={{ animationDelay: '4.3s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-10 h-10 animate-pulse-gentle" style={{ animationDelay: '0.4s' }} />
+          </div>
+          <div className="absolute animate-curve-path-6 opacity-9" style={{ animationDelay: '2.8s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-16 h-16 animate-pulse-gentle" style={{ animationDelay: '1.7s' }} />
+          </div>
+          <div className="absolute animate-curve-path-7 opacity-7" style={{ animationDelay: '5.2s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-11 h-11 animate-pulse-gentle" style={{ animationDelay: '0.9s' }} />
+          </div>
+          <div className="absolute animate-curve-path-8 opacity-6" style={{ animationDelay: '1.9s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-9 h-9 animate-pulse-gentle" style={{ animationDelay: '2.5s' }} />
+          </div>
+          <div className="absolute animate-curve-path-9 opacity-8" style={{ animationDelay: '6.1s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-13 h-13 animate-pulse-gentle" style={{ animationDelay: '0.6s' }} />
+          </div>
+          <div className="absolute animate-curve-path-10 opacity-5" style={{ animationDelay: '3.7s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-7 h-7 animate-pulse-gentle" style={{ animationDelay: '1.3s' }} />
+          </div>
+          <div className="absolute animate-curve-path-11 opacity-9" style={{ animationDelay: '0.9s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-15 h-15 animate-pulse-gentle" style={{ animationDelay: '1.8s' }} />
+          </div>
+          <div className="absolute animate-curve-path-12 opacity-7" style={{ animationDelay: '4.6s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-18 h-18 animate-pulse-gentle" style={{ animationDelay: '0.3s' }} />
+          </div>
+          <div className="absolute animate-curve-path-13 opacity-6" style={{ animationDelay: '2.2s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-12 h-12 animate-pulse-gentle" style={{ animationDelay: '2.9s' }} />
+          </div>
+          <div className="absolute animate-curve-path-14 opacity-8" style={{ animationDelay: '5.8s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-17 h-17 animate-pulse-gentle" style={{ animationDelay: '1.1s' }} />
+          </div>
+          <div className="absolute animate-curve-path-15 opacity-5" style={{ animationDelay: '1.4s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-19 h-19 animate-pulse-gentle" style={{ animationDelay: '0.7s' }} />
+          </div>
+          <div className="absolute animate-curve-path-16 opacity-9" style={{ animationDelay: '3.9s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-8 h-8 animate-pulse-gentle" style={{ animationDelay: '2.3s' }} />
+          </div>
+          <div className="absolute animate-curve-path-17 opacity-6" style={{ animationDelay: '6.7s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-14 h-14 animate-pulse-gentle" style={{ animationDelay: '1.6s' }} />
+          </div>
+          <div className="absolute animate-curve-path-18 opacity-7" style={{ animationDelay: '0.5s' }}>
+            <img src="/assets/images/claude-logo.svg" alt="" className="w-11 h-11 animate-pulse-gentle" style={{ animationDelay: '0.2s' }} />
+          </div>
+        </div>
+        
+        <div className="max-w-8xl mx-auto flex justify-center items-center h-full relative z-10">
+          
+          <div 
+            className="rounded-3xl p-20 text-center w-full flex flex-col justify-center animate-slide-up-delayed relative overflow-hidden"
+            style={{ backgroundColor: '#cc785c', minHeight: '720px', maxWidth: '1200px' }}
+          >
+            {/* Claude Logo in center background */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+              <img 
+                src="/assets/images/claude-logo.svg" 
+                alt="Claude Logo Background" 
+                className="w-96 h-96 animate-pulse-gentle"
+              />
+            </div>
+            
+            {/* Main Heading */}
+            <h2 className="font-bold mb-20 leading-tight relative z-10" style={{ fontSize: '35px', color: '#191919' }}>
+              JOIN A COMMUNITY OF THINKERS,<br />
+              BUILDERS, AND DOERS WHERE<br />
+              YOU'LL HAVE ACCESS TO:
+            </h2>
+            
+            {/* Benefits List */}
+            <div className="space-y-10 mb-20 relative z-10" style={{ fontSize: '30px', color: '#191919' }}>
+              <p className="animate-slide-up" style={{ animationDelay: '0.2s' }}>FREE CLAUDE PRO</p>
+              <p className="animate-slide-up" style={{ animationDelay: '0.4s' }}>$50 IN API CREDITS</p>
+              <p className="animate-slide-up" style={{ animationDelay: '0.6s' }}>ACCESS TO AN EXCLUSIVE HACKATHON WITH THOUSANDS OF $$$ UP FOR GRABS</p>
+              <p className="animate-slide-up" style={{ animationDelay: '0.8s' }}>ANTHROPIC STAFF GUEST LECTURES</p>
+              <p className="animate-slide-up" style={{ animationDelay: '1.0s' }}>AND MORE...</p>
+            </div>
+            
+            {/* Join Us Button */}
+            <button 
+              className="px-20 py-8 rounded-xl font-medium hover:scale-105 transition-all duration-300 mx-auto relative z-10 animate-slide-up-delayed-3"
+              style={{ 
+                backgroundColor: '#d4a27f',
+                fontSize: '28px',
+                color: '#191919'
+              }}
+            >
+              JOIN US
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* What We Are About Section */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
