@@ -138,4 +138,51 @@
       transform: translateY(-20px) scale(0.95);
     }
   }
+  
+  /* Mobile-specific optimizations */
+  @media (max-width: 768px) {
+    .hero-grid {
+      gap: 2rem;
+    }
+    
+    .spinning-logo {
+      width: 16rem;
+      height: 16rem;
+    }
+    
+    .benefits-card {
+      margin: 0 1rem;
+    }
+  }
+  
+  /* Animation performance optimizations */
+  .animate-spin-slow {
+    will-change: transform;
+    backface-visibility: hidden;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+  
+  .animate-pulse-gentle {
+    will-change: opacity;
+  }
+  
+  .animate-bounce {
+    will-change: transform;
+  }
+  
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-spin-slow {
+      animation: none;
+    }
+    
+    .animate-bounce {
+      animation: none;
+    }
+    
+    .animate-pulse-gentle {
+      animation: none;
+    }
+  }
 }
