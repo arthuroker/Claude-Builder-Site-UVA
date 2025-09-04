@@ -32,17 +32,75 @@ export default function Claude3DLogo({ width = 400, height = 400, className = ''
   const [isLoaded, setIsLoaded] = useState(false)
   const [error, setError] = useState<string | null>(null)
   
-  const mouseRef = useRef({ x: 0, y: 0 })
+  const mouseRef = useRef(new THREE.Vector2())
   const targetRotationRef = useRef({ x: 0, y: 0 })
   const currentRotationRef = useRef({ x: 0, y: 0 })
   const raysRef = useRef<RayData[]>([])
 
-  const createRayGeometry = useCallback((length: number, width: number) => {
-    // Create a tapered ray shape using ConeGeometry
-    const geometry = new THREE.ConeGeometry(width, length, 8)
+  const createRayGeometry = useCallback((length: number, baseWidth: number, tipWidth: number) => {
+    // Create a custom ray geometry that's much thicker and more authentic
+    const geometry = new THREE.BufferGeometry()
     
-    // Move the pivot point to the base of the cone
-    geometry.translate(0, length / 2, 0)
+    // Define ray segments for a more organic, Claude-like shape
+    const segments = 12 // More segments for smoother deformation
+    const radialSegments = 8
+    
+    const vertices: number[] = []
+    const indices: number[] = []
+    const normals: number[] = []
+    
+    // Create vertices for a tapered cylinder with rounded ends
+    for (let i = 0; i <= segments; i++) {
+      const t = i / segments
+      const y = t * length
+      
+      // Create a more authentic taper - thicker at base, narrower at tip
+      let radius: number
+      if (t < 0.1) {
+        // Rounded base
+        radius = baseWidth * (0.3 + 0.7 * Math.sin(t * Math.PI * 5))
+      } else if (t > 0.8) {
+        // Tapered tip with slight rounding
+        const tipT = (t - 0.8) / 0.2
+        radius = baseWidth * (1 - t) + tipWidth * Math.sin(tipT * Math.PI * 0.5)
+      } else {
+        // Main body with slight variation for organic feel
+        radius = baseWidth * (1 - t * 0.7) + tipWidth * t + baseWidth * 0.1 * Math.sin(t * Math.PI * 3)
+      }
+      
+      // Create circular cross-section
+      for (let j = 0; j <= radialSegments; j++) {
+        const angle = (j / radialSegments) * Math.PI * 2
+        const x = Math.cos(angle) * radius
+        const z = Math.sin(angle) * radius
+        
+        vertices.push(x, y, z)
+        
+        // Calculate normals for proper lighting
+        const nx = Math.cos(angle)
+        const nz = Math.sin(angle)
+        normals.push(nx, 0, nz)
+      }
+    }
+    
+    // Create faces
+    for (let i = 0; i < segments; i++) {
+      for (let j = 0; j < radialSegments; j++) {
+        const a = i * (radialSegments + 1) + j
+        const b = a + radialSegments + 1
+        const c = a + 1
+        const d = b + 1
+        
+        indices.push(a, b, c)
+        indices.push(c, b, d)
+      }
+    }
+    
+    geometry.setIndex(indices)
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
+    geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3))
+    
+    geometry.computeVertexNormals()
     
     return geometry
   }, [])
@@ -51,8 +109,8 @@ export default function Claude3DLogo({ width = 400, height = 400, className = ''
     const group = new THREE.Group()
     const rays: RayData[] = []
     
-    // Create the central core
-    const coreGeometry = new THREE.SphereGeometry(0.15, 16, 16)
+    // Create the central core - much larger and more prominent
+    const coreGeometry = new THREE.SphereGeometry(0.25, 16, 16)
     const coreMaterial = new THREE.MeshPhongMaterial({
       color: 0xcc785c,
       shininess: 100,
@@ -61,29 +119,36 @@ export default function Claude3DLogo({ width = 400, height = 400, className = ''
     core.position.set(0, 0, 0)
     group.add(core)
     
-    // Create 16 rays in the starburst pattern (matching the Claude logo)
+    // Create 16 rays in the starburst pattern with much thicker proportions
     const rayCount = 16
     const rayMaterial = new THREE.MeshPhongMaterial({
       color: 0xd97757,
-      shininess: 80,
+      shininess: 60,
+      specular: 0x444444,
     })
     
     for (let i = 0; i < rayCount; i++) {
-      const angle = (i / rayCount) * Math.PI * 2
+      // Create irregular angles like in the Claude logo - not perfectly uniform
+      const baseAngle = (i / rayCount) * Math.PI * 2
+      const angleVariation = (Math.sin(i * 1.1) * 0.15) + (Math.cos(i * 0.8) * 0.1)
+      const angle = baseAngle + angleVariation
       
-      // Vary ray lengths to match Claude logo's irregular pattern
-      const baseLength = 1.2
-      const lengthVariation = 0.3 + Math.sin(i * 0.7) * 0.2 + Math.cos(i * 1.3) * 0.15
+      // Vary ray lengths significantly to match Claude logo's very irregular pattern
+      const baseLength = 1.3
+      const lengthVariation = 0.5 + Math.sin(i * 0.9) * 0.3 + Math.cos(i * 1.7) * 0.25 + Math.sin(i * 2.3) * 0.15
       const rayLength = baseLength + lengthVariation
       
-      // Vary ray widths
-      const rayWidth = 0.08 + Math.sin(i * 0.5) * 0.02
+      // Much thicker rays with varied proportions for authenticity
+      const baseRayWidth = 0.16 + Math.sin(i * 0.6) * 0.06 + Math.cos(i * 1.2) * 0.04
+      const tipRayWidth = 0.015 + Math.sin(i * 0.4) * 0.012
       
-      const rayGeometry = createRayGeometry(rayLength, rayWidth)
+      const rayGeometry = createRayGeometry(rayLength, baseRayWidth, tipRayWidth)
       const rayMesh = new THREE.Mesh(rayGeometry.clone(), rayMaterial.clone())
       
-      // Position and rotate the ray
-      rayMesh.position.set(0, 0, 0)
+      // Position and rotate the ray with slight random offset for organic feel
+      const offsetX = Math.sin(i * 0.3) * 0.02
+      const offsetY = Math.cos(i * 0.7) * 0.02
+      rayMesh.position.set(offsetX, offsetY, 0)
       rayMesh.rotation.z = angle - Math.PI / 2 // Rotate to point outward
       
       // Store ray data for interaction
@@ -162,8 +227,8 @@ export default function Claude3DLogo({ width = 400, height = 400, className = ''
       clientY = event.clientY
     }
     
-    mouseRef.current.x = ((clientX - rect.left) / rect.width) * 2 - 1
-    mouseRef.current.y = -((clientY - rect.top) / rect.height) * 2 + 1
+    mouseRef.current.setX(((clientX - rect.left) / rect.width) * 2 - 1)
+    mouseRef.current.setY(-((clientY - rect.top) / rect.height) * 2 + 1)
     
     // Raycast to detect ray interactions
     raycasterRef.current.setFromCamera(mouseRef.current, cameraRef.current)
@@ -175,7 +240,8 @@ export default function Claude3DLogo({ width = 400, height = 400, className = ''
       // Reset all rays hover state
       raysRef.current.forEach(ray => {
         ray.hovered = false
-        ray.mesh.material.color.setHex(0xd97757) // Default color
+        const material = ray.mesh.material as THREE.MeshPhongMaterial
+        material.color.setHex(0xd97757) // Default color
       })
       
       if (intersects.length > 0) {
@@ -184,7 +250,8 @@ export default function Claude3DLogo({ width = 400, height = 400, className = ''
         
         if (intersectedRay) {
           intersectedRay.hovered = true
-          intersectedRay.mesh.material.color.setHex(0xff6b4a) // Hover color
+          const material = intersectedRay.mesh.material as THREE.MeshPhongMaterial
+          material.color.setHex(0xff6b4a) // Hover color
           
           // Set deformation targets based on mouse position
           const strength = 1.0
