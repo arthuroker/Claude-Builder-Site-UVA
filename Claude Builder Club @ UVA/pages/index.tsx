@@ -239,28 +239,27 @@ export default function Home() {
       </section>
 
       {/* How To Join Section */}
-      <section className="min-h-screen flex flex-col justify-start sm:justify-center py-8 px-4" style={{ backgroundColor: '#e5e4df' }}>
-        <div className="w-full flex flex-col items-center" style={{ width: '85vw', maxWidth: '1400px', margin: '0 auto' }}>
+      <section className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#e5e4df', paddingTop: '2rem', paddingBottom: '2rem' }}>
+        <div className="w-full flex flex-col items-center justify-center" style={{ width: '85vw', maxWidth: '1400px' }}>
           
           {/* Main Heading */}
           <h2 
-            className="font-bold font-work-sans text-center mb-6 sm:mb-8" 
+            className="font-bold font-work-sans text-center mb-4 sm:mb-8" 
             style={{ 
               color: '#191919',
-              fontSize: 'clamp(1.75rem, 4vw, 4rem)',
-              marginTop: 'clamp(1rem, 5vh, 3rem)'
+              fontSize: 'clamp(2rem, 4vw, 4rem)'
             }}
           >
             HOW TO JOIN
           </h2>
           
           {/* Two Boxes Container */}
-          <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 justify-center items-stretch w-full" style={{ height: 'clamp(60vh, 70vh, 600px)', minHeight: '400px' }}>
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 justify-center items-stretch w-full" style={{ height: 'auto', minHeight: 'auto' }}>
             
             {/* Left Box - Step 1 */}
             <div 
-              className="rounded-3xl text-center flex flex-col justify-between flex-1 relative p-6 md:p-8"
-              style={{ backgroundColor: '#cc785c' }}
+              className="rounded-3xl text-center flex flex-col justify-between flex-1 relative p-4 sm:p-6 md:p-8 h-96 sm:h-auto"
+              style={{ backgroundColor: '#cc785c', minHeight: '350px' }}
             >
               {/* Top - Number and Text */}
               <div className="flex flex-col items-center space-y-4">
@@ -319,8 +318,8 @@ export default function Home() {
             
             {/* Right Box - Step 2 */}
             <div 
-              className="rounded-3xl text-center flex flex-col justify-between flex-1 relative p-6 md:p-8"
-              style={{ backgroundColor: '#cc785c' }}
+              className="rounded-3xl text-center flex flex-col justify-between flex-1 relative p-4 sm:p-6 md:p-8 h-96 sm:h-auto"
+              style={{ backgroundColor: '#cc785c', minHeight: '350px' }}
             >
               {/* Top - Number and Text */}
               <div className="flex flex-col items-center space-y-4">
