@@ -27,7 +27,12 @@
       "Read(/C:\\Users\\arthur\\Documents\\Claude-Builder-at-UVA-Site\\Claude Builder Club @ UVA\\styles/**)",
       "Read(/C:\\Users\\arthur\\Documents\\Claude-Builder-at-UVA-Site\\Claude Builder Club @ UVA\\public\\assets\\images/**)",
       "Read(/C:\\Users\\arthur\\Documents\\Claude-Builder-at-UVA-Site\\Claude Builder Club @ UVA\\public\\assets\\images/**)",
-      "Read(/C:\\Users\\arthur\\Documents\\Claude-Builder-at-UVA-Site\\Claude Builder Club @ UVA\\public\\assets\\images/**)"
+      "Read(/C:\\Users\\arthur\\Documents\\Claude-Builder-at-UVA-Site\\Claude Builder Club @ UVA\\public\\assets\\images/**)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []
