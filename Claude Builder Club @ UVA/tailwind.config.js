@@ -30,9 +30,16 @@ module.exports = {
         'hero-text': '#191919',           // Text color
       },
       fontFamily: {
+        'sans': ['Poppins', 'sans-serif'],
         'poppins': ['Poppins', 'sans-serif'],
         'beautifully-delicious': ['Beautifully Delicious', 'sans-serif'],
-        'work-sans': ['Work Sans', 'sans-serif'],
+        'work-sans': ['Poppins', 'sans-serif'],
+      },
+      fontWeight: {
+        'normal': '600',
+        'medium': '600',
+        'semibold': '600',
+        'bold': '600',
       },
       animation: {
         'fade-in': 'fadeIn 0.8s ease-in-out',
