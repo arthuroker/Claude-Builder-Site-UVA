@@ -3,9 +3,26 @@ import { ChevronDown, Users, Zap, BookOpen, ArrowRight, Github, Mail, ExternalLi
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false)
+  const [currentBenefit, setCurrentBenefit] = useState(0)
+
+  const benefits = [
+    "FREE CLAUDE PRO",
+    "$50 IN API CREDITS", 
+    "ACCESS TO AN EXCLUSIVE HACKATHON WITH THOUSANDS OF $$$ UP FOR GRABS",
+    "ANTHROPIC STAFF GUEST LECTURES",
+    "AND MORE..."
+  ]
 
   useEffect(() => {
     setIsVisible(true)
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBenefit((prev) => (prev + 1) % benefits.length)
+    }, 3000) // Change every 3 seconds
+
+    return () => clearInterval(interval)
   }, [])
 
   const scrollToBottom = () => {
@@ -92,29 +109,56 @@ export default function Home() {
             </div>
             
             {/* Main Heading */}
-            <h2 className="font-bold font-work-sans mb-4 md:mb-6 lg:mb-8 leading-tight relative z-10 text-base md:text-lg lg:text-xl xl:text-2xl" style={{ color: '#191919' }}>
+            <h2 className="font-bold font-work-sans mb-4 md:mb-6 lg:mb-8 leading-tight relative z-10" style={{ 
+              color: '#191919',
+              fontSize: 'clamp(1.25rem, 3.5vw, 3rem)'
+            }}>
               JOIN A COMMUNITY OF THINKERS,<br />
               BUILDERS, AND DOERS WHERE<br />
               YOU'LL HAVE ACCESS TO:
             </h2>
             
-            {/* Benefits List */}
-            <div className="space-y-2 md:space-y-3 lg:space-y-4 mb-4 md:mb-6 lg:mb-8 relative z-10 font-work-sans text-xs md:text-sm lg:text-base xl:text-lg" style={{ color: '#191919' }}>
-              <p className="animate-slide-up" style={{ animationDelay: '0.2s' }}>FREE CLAUDE PRO</p>
-              <p className="animate-slide-up" style={{ animationDelay: '0.4s' }}>$50 IN API CREDITS</p>
-              <p className="animate-slide-up" style={{ animationDelay: '0.6s' }}>ACCESS TO AN EXCLUSIVE HACKATHON WITH THOUSANDS OF $$$ UP FOR GRABS</p>
-              <p className="animate-slide-up" style={{ animationDelay: '0.8s' }}>ANTHROPIC STAFF GUEST LECTURES</p>
-              <p className="animate-slide-up" style={{ animationDelay: '1.0s' }}>AND MORE...</p>
+            {/* Benefits Carousel */}
+            <div className="mb-4 md:mb-6 lg:mb-8 relative z-10 font-work-sans" style={{ 
+              color: '#191919',
+              fontSize: 'clamp(0.875rem, 2.25vw, 2rem)'
+            }}>
+              <div className="relative w-full text-center h-16 md:h-20 lg:h-24 flex items-center justify-center overflow-hidden">
+                <p 
+                  key={currentBenefit}
+                  className="animate-fade-in px-4 leading-tight"
+                  style={{
+                    textShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                    animation: 'fadeInUp 1s ease-out'
+                  }}
+                >
+                  {benefits[currentBenefit]}
+                </p>
+              </div>
+              
+              {/* Progress indicators */}
+              <div className="flex justify-center space-x-2 mt-4">
+                {benefits.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index === currentBenefit ? 'bg-opacity-80 scale-125' : 'bg-opacity-30 scale-100'
+                    }`}
+                    style={{ backgroundColor: '#191919' }}
+                  />
+                ))}
+              </div>
             </div>
             
             {/* Join Us Button */}
             <div className="flex justify-center">
               <button 
                 onClick={scrollToBottom}
-                className="px-6 py-3 md:px-8 md:py-4 lg:px-12 lg:py-6 rounded-xl font-medium font-work-sans hover:scale-105 transition-all duration-300 relative z-10 animate-slide-up-delayed-3 text-xs md:text-sm lg:text-base xl:text-lg touch-target cursor-pointer"
+                className="px-6 py-3 md:px-8 md:py-4 lg:px-12 lg:py-6 rounded-xl font-medium font-work-sans hover:scale-105 transition-all duration-300 relative z-10 animate-slide-up-delayed-3 touch-target cursor-pointer"
                 style={{ 
                   backgroundColor: '#d4a27f',
-                  color: '#191919'
+                  color: '#191919',
+                  fontSize: 'clamp(0.875rem, 2vw, 1.75rem)'
                 }}
               >
                 JOIN US
@@ -159,12 +203,15 @@ export default function Home() {
 
       {/* How To Join Section */}
       <section className="min-h-screen flex items-center justify-center py-8 px-4" style={{ backgroundColor: '#e5e4df' }}>
-        <div className="w-full flex flex-col items-center justify-center" style={{ width: '90vw', maxWidth: '1200px' }}>
+        <div className="w-full flex flex-col items-center justify-center" style={{ width: '85vw', maxWidth: '1400px' }}>
           
           {/* Main Heading */}
           <h2 
-            className="font-bold font-work-sans text-center mb-8 text-3xl md:text-4xl lg:text-5xl" 
-            style={{ color: '#191919' }}
+            className="font-bold font-work-sans text-center mb-8" 
+            style={{ 
+              color: '#191919',
+              fontSize: 'clamp(2rem, 4vw, 4rem)'
+            }}
           >
             HOW TO JOIN
           </h2>
@@ -177,38 +224,57 @@ export default function Home() {
               className="rounded-3xl text-center flex flex-col justify-between flex-1 relative p-6 md:p-8"
               style={{ backgroundColor: '#cc785c' }}
             >
-              <div className="flex flex-col items-center">
+              {/* Top - Number and Text */}
+              <div className="flex flex-col items-center space-y-4">
                 <h3 
-                  className="font-bold font-work-sans mb-4 text-3xl md:text-4xl lg:text-5xl" 
-                  style={{ color: '#191919' }}
+                  className="font-bold font-work-sans" 
+                  style={{ 
+                    color: '#191919',
+                    fontSize: 'clamp(3rem, 6vw, 8rem)'
+                  }}
                 >
                   1
                 </h3>
                 <p 
-                  className="font-work-sans mb-6 text-lg md:text-xl lg:text-2xl" 
-                  style={{ color: '#191919' }}
+                  className="font-work-sans" 
+                  style={{ 
+                    color: '#191919',
+                    fontSize: 'clamp(1rem, 2.5vw, 2.5rem)'
+                  }}
                 >
                   JOIN OUR LISTSERV
                 </p>
               </div>
               
-              <div className="flex flex-col items-center">
+              {/* Middle - Button */}
+              <div className="flex justify-center">
                 <a 
                   href="https://lists.virginia.edu/sympa/subscribe/claudebuildersatuva"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 md:px-8 md:py-4 rounded-xl font-medium font-work-sans hover:scale-105 transition-all duration-300 text-base md:text-lg touch-target mb-6"
+                  className="rounded-xl font-medium font-work-sans hover:scale-105 transition-all duration-300 touch-target flex items-center justify-center"
                   style={{ 
                     backgroundColor: '#d4a27f',
-                    color: '#191919'
+                    color: '#191919',
+                    fontSize: 'clamp(0.875rem, 1.75vw, 1.5rem)',
+                    padding: 'clamp(0.75rem, 1.5vw, 1.25rem) clamp(1.5rem, 3vw, 2.5rem)',
+                    minHeight: 'clamp(3rem, 4.5vw, 4rem)'
                   }}
                 >
                   SUBSCRIBE
                 </a>
+              </div>
+              
+              {/* Bottom - GIF */}
+              <div className="flex justify-center">
                 <img 
                   src="/assets/animations/claude point.gif" 
                   alt="Claude Point" 
-                  className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 object-contain rounded-2xl"
+                  className="object-contain rounded-2xl"
+                  style={{
+                    width: 'clamp(6rem, 10vw, 10rem)',
+                    height: 'clamp(6rem, 10vw, 10rem)'
+                  }}
                 />
               </div>
             </div>
@@ -218,38 +284,57 @@ export default function Home() {
               className="rounded-3xl text-center flex flex-col justify-between flex-1 relative p-6 md:p-8"
               style={{ backgroundColor: '#cc785c' }}
             >
-              <div className="flex flex-col items-center">
+              {/* Top - Number and Text */}
+              <div className="flex flex-col items-center space-y-4">
                 <h3 
-                  className="font-bold font-work-sans mb-4 text-3xl md:text-4xl lg:text-5xl" 
-                  style={{ color: '#191919' }}
+                  className="font-bold font-work-sans" 
+                  style={{ 
+                    color: '#191919',
+                    fontSize: 'clamp(3rem, 6vw, 8rem)'
+                  }}
                 >
                   2
                 </h3>
                 <p 
-                  className="font-work-sans mb-6 text-lg md:text-xl lg:text-2xl" 
-                  style={{ color: '#191919' }}
+                  className="font-work-sans" 
+                  style={{ 
+                    color: '#191919',
+                    fontSize: 'clamp(1rem, 2.5vw, 2.5rem)'
+                  }}
                 >
-                  SIGN UP WITH THE<br />FORM BELOW
+                  SIGN UP BELOW
                 </p>
               </div>
               
-              <div className="flex flex-col items-center">
+              {/* Middle - Button */}
+              <div className="flex justify-center">
                 <a 
                   href="https://forms.gle/3q6seqwNxMuKLaUg7"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 md:px-8 md:py-4 rounded-xl font-medium font-work-sans hover:scale-105 transition-all duration-300 text-base md:text-lg touch-target mb-6"
+                  className="rounded-xl font-medium font-work-sans hover:scale-105 transition-all duration-300 touch-target flex items-center justify-center"
                   style={{ 
                     backgroundColor: '#d4a27f',
-                    color: '#191919'
+                    color: '#191919',
+                    fontSize: 'clamp(0.875rem, 1.75vw, 1.5rem)',
+                    padding: 'clamp(0.75rem, 1.5vw, 1.25rem) clamp(1.5rem, 3vw, 2.5rem)',
+                    minHeight: 'clamp(3rem, 4.5vw, 4rem)'
                   }}
                 >
                   SIGN UP
                 </a>
+              </div>
+              
+              {/* Bottom - GIF */}
+              <div className="flex justify-center">
                 <img 
                   src="/assets/animations/claude point.gif" 
                   alt="Claude Point" 
-                  className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 object-contain rounded-2xl"
+                  className="object-contain rounded-2xl"
+                  style={{
+                    width: 'clamp(6rem, 10vw, 10rem)',
+                    height: 'clamp(6rem, 10vw, 10rem)'
+                  }}
                 />
               </div>
             </div>
