@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ChevronDown, Users, Zap, BookOpen, ArrowRight, Github, Mail, ExternalLink } from 'lucide-react'
+import { Analytics } from "@vercel/analytics/next"
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false)
@@ -202,22 +203,23 @@ export default function Home() {
       </section>
 
       {/* How To Join Section */}
-      <section className="min-h-screen flex items-start sm:items-center justify-center py-4 sm:py-8 px-4" style={{ backgroundColor: '#e5e4df', paddingTop: 'max(2rem, 8vh)' }}>
-        <div className="w-full flex flex-col items-center justify-center" style={{ width: '85vw', maxWidth: '1400px' }}>
+      <section className="min-h-screen flex flex-col justify-start sm:justify-center py-8 px-4" style={{ backgroundColor: '#e5e4df' }}>
+        <div className="w-full flex flex-col items-center" style={{ width: '85vw', maxWidth: '1400px', margin: '0 auto' }}>
           
           {/* Main Heading */}
           <h2 
-            className="font-bold font-work-sans text-center mb-8" 
+            className="font-bold font-work-sans text-center mb-6 sm:mb-8" 
             style={{ 
               color: '#191919',
-              fontSize: 'clamp(2rem, 4vw, 4rem)'
+              fontSize: 'clamp(1.75rem, 4vw, 4rem)',
+              marginTop: 'clamp(1rem, 5vh, 3rem)'
             }}
           >
             HOW TO JOIN
           </h2>
           
           {/* Two Boxes Container */}
-          <div className="flex flex-col lg:flex-row gap-6 justify-center items-stretch w-full" style={{ height: '70vh', minHeight: '500px' }}>
+          <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 justify-center items-stretch w-full" style={{ height: 'clamp(60vh, 70vh, 600px)', minHeight: '400px' }}>
             
             {/* Left Box - Step 1 */}
             <div 
@@ -342,6 +344,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Analytics />
     </div>
   )
 }
