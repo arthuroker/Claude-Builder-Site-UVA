@@ -4,6 +4,32 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Responsive breakpoints */
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1440px;
+  --breakpoint-3xl: 1600px;
+  --breakpoint-4xl: 1920px;
+  
+  /* Responsive spacing scale */
+  --space-xs: clamp(0.5rem, 1vw, 0.75rem);
+  --space-sm: clamp(0.75rem, 1.5vw, 1rem);
+  --space-md: clamp(1rem, 2vw, 1.5rem);
+  --space-lg: clamp(1.5rem, 3vw, 2.5rem);
+  --space-xl: clamp(2rem, 4vw, 3.5rem);
+  --space-2xl: clamp(2.5rem, 5vw, 5rem);
+  --space-3xl: clamp(3rem, 6vw, 7rem);
+  
+  /* Section heights - responsive vh units */
+  --section-height: clamp(85vh, 90vh, 95vh);
+  --hero-height: 100vh;
+  --hero-content-height: 60vh;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -48,4 +74,45 @@
   .sage-button {
     @apply bg-sage hover:bg-sage/90 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl;
   }
+  
+  /* Responsive utilities */
+  .section-height {
+    min-height: var(--section-height);
+  }
+  
+  .hero-height {
+    min-height: var(--hero-height);
+  }
+  
+  .hero-content-height {
+    height: var(--hero-content-height);
+  }
+  
+  .responsive-container {
+    width: min(100% - 2rem, 90rem);
+    margin-inline: auto;
+  }
+  
+  .hero-content-width {
+    width: min(100%, 50vw);
+    max-width: 50rem;
+  }
+  
+  /* Touch-friendly interactive elements */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Fluid spacing utilities */
+  .space-xs { margin: var(--space-xs); }
+  .space-sm { margin: var(--space-sm); }
+  .space-md { margin: var(--space-md); }
+  .space-lg { margin: var(--space-lg); }
+  .space-xl { margin: var(--space-xl); }
+  .space-2xl { margin: var(--space-2xl); }
+  .space-3xl { margin: var(--space-3xl); }
+  
+  .px-fluid { padding-inline: clamp(1rem, 4vw, 2rem); }
+  .py-fluid { padding-block: clamp(2rem, 8vh, 4rem); }
 }
