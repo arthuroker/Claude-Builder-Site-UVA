@@ -9,6 +9,16 @@ interface Claude3DLogoProps {
   className?: string
 }
 
+interface RayData {
+  mesh: THREE.Mesh
+  originalGeometry: THREE.BufferGeometry
+  deformationTarget: { x: number, y: number }
+  currentDeformation: { x: number, y: number }
+  angle: number
+  length: number
+  hovered: boolean
+}
+
 export default function Claude3DLogo({ width = 400, height = 400, className = '' }: Claude3DLogoProps) {
   const mountRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<THREE.Scene | null>(null)
@@ -16,6 +26,7 @@ export default function Claude3DLogo({ width = 400, height = 400, className = ''
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null)
   const logoGroupRef = useRef<THREE.Group | null>(null)
   const frameRef = useRef<number | null>(null)
+  const raycasterRef = useRef<THREE.Raycaster | null>(null)
   
   const [isInteracting, setIsInteracting] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
@@ -24,86 +35,121 @@ export default function Claude3DLogo({ width = 400, height = 400, className = ''
   const mouseRef = useRef({ x: 0, y: 0 })
   const targetRotationRef = useRef({ x: 0, y: 0 })
   const currentRotationRef = useRef({ x: 0, y: 0 })
+  const raysRef = useRef<RayData[]>([])
+
+  const createRayGeometry = useCallback((length: number, width: number) => {
+    // Create a tapered ray shape using ConeGeometry
+    const geometry = new THREE.ConeGeometry(width, length, 8)
+    
+    // Move the pivot point to the base of the cone
+    geometry.translate(0, length / 2, 0)
+    
+    return geometry
+  }, [])
 
   const createClaudeLogo = useCallback(() => {
     const group = new THREE.Group()
+    const rays: RayData[] = []
     
-    // Create the main Claude logo shape - a stylized "C" with depth
-    const shape = new THREE.Shape()
-    
-    // Draw the "C" shape
-    const radius = 1.2
-    const thickness = 0.3
-    const startAngle = Math.PI * 0.2
-    const endAngle = Math.PI * 1.8
-    
-    // Outer curve
-    shape.moveTo(Math.cos(startAngle) * radius, Math.sin(startAngle) * radius)
-    shape.absarc(0, 0, radius, startAngle, endAngle, false)
-    
-    // Inner curve
-    const innerRadius = radius - thickness
-    shape.lineTo(Math.cos(endAngle) * innerRadius, Math.sin(endAngle) * innerRadius)
-    shape.absarc(0, 0, innerRadius, endAngle, startAngle, true)
-    shape.closePath()
-    
-    // Extrude the shape to create depth
-    const extrudeSettings = {
-      depth: 0.4,
-      bevelEnabled: true,
-      bevelSegments: 8,
-      steps: 1,
-      bevelSize: 0.05,
-      bevelThickness: 0.05,
-    }
-    
-    const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings)
-    
-    // Create gradient-like material using vertex colors
-    const material = new THREE.MeshPhongMaterial({
+    // Create the central core
+    const coreGeometry = new THREE.SphereGeometry(0.15, 16, 16)
+    const coreMaterial = new THREE.MeshPhongMaterial({
       color: 0xcc785c,
       shininess: 100,
-      specular: 0x444444,
+    })
+    const core = new THREE.Mesh(coreGeometry, coreMaterial)
+    core.position.set(0, 0, 0)
+    group.add(core)
+    
+    // Create 16 rays in the starburst pattern (matching the Claude logo)
+    const rayCount = 16
+    const rayMaterial = new THREE.MeshPhongMaterial({
+      color: 0xd97757,
+      shininess: 80,
     })
     
-    const logoMesh = new THREE.Mesh(geometry, material)
-    logoMesh.position.z = -0.2
-    group.add(logoMesh)
-    
-    // Add inner geometric details
-    const detailGeometry = new THREE.RingGeometry(0.3, 0.5, 16)
-    const detailMaterial = new THREE.MeshPhongMaterial({
-      color: 0xd4a27f,
-      transparent: true,
-      opacity: 0.8,
-    })
-    const detailRing = new THREE.Mesh(detailGeometry, detailMaterial)
-    detailRing.position.z = 0.1
-    group.add(detailRing)
-    
-    // Add floating particles/dots for extra visual interest
-    const particleGeometry = new THREE.SphereGeometry(0.02, 8, 6)
-    const particleMaterial = new THREE.MeshPhongMaterial({
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.6,
-    })
-    
-    for (let i = 0; i < 12; i++) {
-      const particle = new THREE.Mesh(particleGeometry, particleMaterial)
-      const angle = (i / 12) * Math.PI * 2
-      const distance = 1.8 + Math.random() * 0.4
-      particle.position.x = Math.cos(angle) * distance
-      particle.position.y = Math.sin(angle) * distance
-      particle.position.z = (Math.random() - 0.5) * 0.8
-      group.add(particle)
+    for (let i = 0; i < rayCount; i++) {
+      const angle = (i / rayCount) * Math.PI * 2
+      
+      // Vary ray lengths to match Claude logo's irregular pattern
+      const baseLength = 1.2
+      const lengthVariation = 0.3 + Math.sin(i * 0.7) * 0.2 + Math.cos(i * 1.3) * 0.15
+      const rayLength = baseLength + lengthVariation
+      
+      // Vary ray widths
+      const rayWidth = 0.08 + Math.sin(i * 0.5) * 0.02
+      
+      const rayGeometry = createRayGeometry(rayLength, rayWidth)
+      const rayMesh = new THREE.Mesh(rayGeometry.clone(), rayMaterial.clone())
+      
+      // Position and rotate the ray
+      rayMesh.position.set(0, 0, 0)
+      rayMesh.rotation.z = angle - Math.PI / 2 // Rotate to point outward
+      
+      // Store ray data for interaction
+      const rayData: RayData = {
+        mesh: rayMesh,
+        originalGeometry: rayGeometry.clone(),
+        deformationTarget: { x: 0, y: 0 },
+        currentDeformation: { x: 0, y: 0 },
+        angle,
+        length: rayLength,
+        hovered: false
+      }
+      
+      rays.push(rayData)
+      group.add(rayMesh)
     }
     
+    raysRef.current = rays
     return group
+  }, [createRayGeometry])
+
+  const deformRay = useCallback((ray: RayData, deformationAmount: number) => {
+    const geometry = ray.originalGeometry.clone()
+    const positionAttribute = geometry.getAttribute('position')
+    
+    if (positionAttribute) {
+      const positions = positionAttribute.array as Float32Array
+      const vertices = []
+      
+      for (let i = 0; i < positions.length; i += 3) {
+        vertices.push(new THREE.Vector3(positions[i], positions[i + 1], positions[i + 2]))
+      }
+      
+      // Apply putty-like deformation based on vertex distance from tip
+      vertices.forEach((vertex, index) => {
+        const distanceFromBase = vertex.y / ray.length
+        const deformationFactor = Math.pow(distanceFromBase, 2) * deformationAmount
+        
+        // Apply sine wave deformation for organic feel
+        vertex.x += Math.sin(distanceFromBase * Math.PI * 2) * deformationFactor * 0.1
+        vertex.z += Math.cos(distanceFromBase * Math.PI * 3) * deformationFactor * 0.05
+        
+        // Bend the ray
+        const bendAmount = deformationFactor * 0.3
+        vertex.x += bendAmount * ray.currentDeformation.x
+        vertex.y += Math.sin(bendAmount) * Math.abs(ray.currentDeformation.y) * 0.2
+      })
+      
+      // Update geometry
+      const newPositions = new Float32Array(vertices.length * 3)
+      vertices.forEach((vertex, index) => {
+        newPositions[index * 3] = vertex.x
+        newPositions[index * 3 + 1] = vertex.y
+        newPositions[index * 3 + 2] = vertex.z
+      })
+      
+      geometry.setAttribute('position', new THREE.BufferAttribute(newPositions, 3))
+      geometry.computeVertexNormals()
+      
+      ray.mesh.geometry.dispose()
+      ray.mesh.geometry = geometry
+    }
   }, [])
 
   const handleMouseMove = useCallback((event: MouseEvent | TouchEvent) => {
-    if (!mountRef.current) return
+    if (!mountRef.current || !raycasterRef.current || !cameraRef.current) return
     
     const rect = mountRef.current.getBoundingClientRect()
     let clientX: number, clientY: number
@@ -119,10 +165,39 @@ export default function Claude3DLogo({ width = 400, height = 400, className = ''
     mouseRef.current.x = ((clientX - rect.left) / rect.width) * 2 - 1
     mouseRef.current.y = -((clientY - rect.top) / rect.height) * 2 + 1
     
-    // Convert to rotation targets
-    targetRotationRef.current.y = mouseRef.current.x * Math.PI * 0.3
-    targetRotationRef.current.x = mouseRef.current.y * Math.PI * 0.2
-  }, [])
+    // Raycast to detect ray interactions
+    raycasterRef.current.setFromCamera(mouseRef.current, cameraRef.current)
+    
+    if (logoGroupRef.current) {
+      const rayMeshes = raysRef.current.map(ray => ray.mesh)
+      const intersects = raycasterRef.current.intersectObjects(rayMeshes)
+      
+      // Reset all rays hover state
+      raysRef.current.forEach(ray => {
+        ray.hovered = false
+        ray.mesh.material.color.setHex(0xd97757) // Default color
+      })
+      
+      if (intersects.length > 0) {
+        setIsInteracting(true)
+        const intersectedRay = raysRef.current.find(ray => ray.mesh === intersects[0].object)
+        
+        if (intersectedRay) {
+          intersectedRay.hovered = true
+          intersectedRay.mesh.material.color.setHex(0xff6b4a) // Hover color
+          
+          // Set deformation targets based on mouse position
+          const strength = 1.0
+          intersectedRay.deformationTarget.x = mouseRef.current.x * strength
+          intersectedRay.deformationTarget.y = mouseRef.current.y * strength
+        }
+      } else {
+        // General rotation when not hovering over specific rays
+        targetRotationRef.current.y = mouseRef.current.x * Math.PI * 0.2
+        targetRotationRef.current.x = mouseRef.current.y * Math.PI * 0.1
+      }
+    }
+  }, [deformRay])
 
   const handleMouseEnter = useCallback(() => {
     setIsInteracting(true)
@@ -147,23 +222,44 @@ export default function Claude3DLogo({ width = 400, height = 400, className = ''
     
     // Apply rotations
     logoGroupRef.current.rotation.x = currentRotationRef.current.x
-    logoGroupRef.current.rotation.y = currentRotationRef.current.y + (isInteracting ? 0 : Date.now() * 0.0005)
+    logoGroupRef.current.rotation.y = currentRotationRef.current.y + (isInteracting ? 0 : Date.now() * 0.0003)
     
     // Gentle floating animation
-    logoGroupRef.current.position.y = Math.sin(Date.now() * 0.001) * 0.1
+    logoGroupRef.current.position.y = Math.sin(Date.now() * 0.001) * 0.05
     
-    // Animate particles
-    logoGroupRef.current.children.forEach((child, index) => {
-      if (index > 1) { // Skip main logo and detail ring
-        const time = Date.now() * 0.001 + index
-        child.position.z += Math.sin(time) * 0.01
-        child.rotation.z = time * 0.5
+    // Update ray deformations with smooth interpolation
+    raysRef.current.forEach(ray => {
+      const deformLerpFactor = ray.hovered ? 0.08 : 0.03
+      
+      // Smooth deformation interpolation
+      ray.currentDeformation.x += (ray.deformationTarget.x - ray.currentDeformation.x) * deformLerpFactor
+      ray.currentDeformation.y += (ray.deformationTarget.y - ray.currentDeformation.y) * deformLerpFactor
+      
+      // Apply deformation if there's any
+      const totalDeformation = Math.abs(ray.currentDeformation.x) + Math.abs(ray.currentDeformation.y)
+      if (totalDeformation > 0.01) {
+        deformRay(ray, totalDeformation)
+      }
+      
+      // Reset deformation target when not hovered
+      if (!ray.hovered) {
+        const resetSpeed = 0.02
+        ray.deformationTarget.x *= (1 - resetSpeed)
+        ray.deformationTarget.y *= (1 - resetSpeed)
+      }
+      
+      // Add subtle wave animation to non-hovered rays
+      if (!ray.hovered) {
+        const time = Date.now() * 0.001
+        const waveAmount = 0.05
+        ray.currentDeformation.x += Math.sin(time + ray.angle * 3) * waveAmount * 0.1
+        ray.currentDeformation.y += Math.cos(time + ray.angle * 2) * waveAmount * 0.05
       }
     })
     
     rendererRef.current.render(sceneRef.current, cameraRef.current)
     frameRef.current = requestAnimationFrame(animate)
-  }, [isInteracting])
+  }, [isInteracting, deformRay])
 
   useEffect(() => {
     if (!mountRef.current) return
@@ -184,8 +280,12 @@ export default function Claude3DLogo({ width = 400, height = 400, className = ''
 
       // Create camera
       const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000)
-      camera.position.z = 5
+      camera.position.z = 4
       cameraRef.current = camera
+
+      // Create raycaster for interaction
+      const raycaster = new THREE.Raycaster()
+      raycasterRef.current = raycaster
 
       // Create renderer with performance optimizations
       const renderer = new THREE.WebGLRenderer({ 
@@ -201,20 +301,25 @@ export default function Claude3DLogo({ width = 400, height = 400, className = ''
       renderer.shadowMap.type = THREE.PCFSoftShadowMap
       rendererRef.current = renderer
 
-      // Add lights
-      const ambientLight = new THREE.AmbientLight(0x404040, 0.6)
+      // Add lights optimized for the starburst
+      const ambientLight = new THREE.AmbientLight(0x404040, 0.4)
       scene.add(ambientLight)
 
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
-      directionalLight.position.set(5, 5, 5)
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0)
+      directionalLight.position.set(3, 3, 5)
       directionalLight.castShadow = true
-      directionalLight.shadow.mapSize.width = 1024
-      directionalLight.shadow.mapSize.height = 1024
+      directionalLight.shadow.mapSize.width = 2048
+      directionalLight.shadow.mapSize.height = 2048
       scene.add(directionalLight)
 
-      const pointLight = new THREE.PointLight(0xcc785c, 0.4, 10)
-      pointLight.position.set(-3, 0, 3)
-      scene.add(pointLight)
+      // Add rim lighting for dramatic effect
+      const rimLight1 = new THREE.DirectionalLight(0xff6b4a, 0.3)
+      rimLight1.position.set(-5, 0, 3)
+      scene.add(rimLight1)
+
+      const rimLight2 = new THREE.DirectionalLight(0xd4a27f, 0.2)
+      rimLight2.position.set(0, -5, 3)
+      scene.add(rimLight2)
 
       // Create and add the Claude logo
       const logoGroup = createClaudeLogo()
@@ -300,7 +405,7 @@ export default function Claude3DLogo({ width = 400, height = 400, className = ''
         </div>
       )}
       <div className="absolute bottom-2 right-2 text-xs text-gray-400 opacity-50">
-        {isInteracting ? 'Interactive' : 'Hover to control'}
+        {isInteracting ? 'Deforming ray' : 'Hover rays to deform'}
       </div>
     </div>
   )
