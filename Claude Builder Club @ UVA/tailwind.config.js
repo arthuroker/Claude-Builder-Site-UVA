@@ -62,6 +62,7 @@ module.exports = {
         'curve-path-16': 'curvePath16 24s ease-in-out infinite',
         'curve-path-17': 'curvePath17 41s ease-in-out infinite',
         'curve-path-18': 'curvePath18 28s ease-in-out infinite',
+        'spin-slow': 'spin 20s linear infinite',
       },
       keyframes: {
         fadeIn: {
