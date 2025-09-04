@@ -5,6 +5,11 @@ import { Analytics } from "@vercel/analytics/next"
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false)
   const [currentBenefit, setCurrentBenefit] = useState(0)
+  const [scrollY, setScrollY] = useState(0)
+  const [nextSectionOpacity, setNextSectionOpacity] = useState(0)
+  const [scrollProgress, setScrollProgress] = useState(0)
+  const [showScrollHint, setShowScrollHint] = useState(true)
+  const [heroOpacity, setHeroOpacity] = useState(1)
 
   const benefits = [
     "FREE CLAUDE PRO",
@@ -26,6 +31,54 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolled = window.scrollY
+      const windowHeight = window.innerHeight
+      const docHeight = document.documentElement.scrollHeight - windowHeight
+      
+      setScrollY(scrolled)
+      
+      // Calculate overall scroll progress
+      const progress = Math.min(scrolled / docHeight, 1)
+      setScrollProgress(progress)
+      
+      // Hide scroll hint after user starts scrolling
+      if (scrolled > 50 && showScrollHint) {
+        setShowScrollHint(false)
+      }
+      
+      // Calculate hero fade-out - fade out faster but not too fast
+      const heroFadeStart = windowHeight * 0.25
+      const heroFadeEnd = windowHeight * 0.6
+      
+      if (scrolled >= heroFadeStart && scrolled <= heroFadeEnd) {
+        const heroProgress = (scrolled - heroFadeStart) / (heroFadeEnd - heroFadeStart)
+        setHeroOpacity(1 - heroProgress)
+      } else if (scrolled < heroFadeStart) {
+        setHeroOpacity(1)
+      } else {
+        setHeroOpacity(0)
+      }
+      
+      // Calculate opacity for next section fade-in - faster white fade
+      const fadeStart = windowHeight * 0.4
+      const fadeEnd = windowHeight * 0.8
+      
+      if (scrolled >= fadeStart && scrolled <= fadeEnd) {
+        const sectionProgress = (scrolled - fadeStart) / (fadeEnd - fadeStart)
+        setNextSectionOpacity(Math.min(sectionProgress, 1))
+      } else if (scrolled < fadeStart) {
+        setNextSectionOpacity(0)
+      } else {
+        setNextSectionOpacity(1)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [showScrollHint])
+
   const scrollToBottom = () => {
     window.scrollTo({
       top: document.documentElement.scrollHeight,
@@ -34,9 +87,66 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
-      {/* Hero Section - Full Height */}
-      <section className="relative bg-hero-bg flex flex-col items-center justify-between min-h-screen px-4 py-8">
+    <div className="relative">
+      {/* Scroll Progress Bar */}
+      <div 
+        className="scroll-progress"
+        style={{ 
+          transform: `scaleX(${scrollProgress})`,
+          opacity: scrollY > 100 ? 1 : 0
+        }}
+      />
+      
+      {/* Scroll Hint - appears after page load */}
+      {showScrollHint && (
+        <div className="scroll-hint" style={{ bottom: '1rem' }}>
+          <ChevronDown className="w-6 h-6 animate-gentle-bounce opacity-60 text-hero-text" />
+        </div>
+      )}
+      
+      {/* Side Scroll Dots */}
+      <div 
+        className="scroll-dots"
+        style={{ opacity: scrollY > 100 ? 1 : 0 }}
+      >
+        <div className="flex flex-col space-y-3">
+          <div 
+            className="w-2 h-2 rounded-full transition-all duration-300"
+            style={{
+              backgroundColor: '#cc785c',
+              opacity: scrollY < (typeof window !== 'undefined' ? window.innerHeight * 0.3 : 240) ? 1 : 0.3,
+              transform: scrollY < (typeof window !== 'undefined' ? window.innerHeight * 0.3 : 240) ? 'scale(1.25)' : 'scale(1)'
+            }}
+          />
+          <div 
+            className="w-2 h-2 rounded-full transition-all duration-300"
+            style={{
+              backgroundColor: '#cc785c',
+              opacity: (scrollY >= (typeof window !== 'undefined' ? window.innerHeight * 0.3 : 240) && 
+                      scrollY < (typeof window !== 'undefined' ? window.innerHeight * 2 : 1600)) ? 1 : 0.3,
+              transform: (scrollY >= (typeof window !== 'undefined' ? window.innerHeight * 0.3 : 240) && 
+                         scrollY < (typeof window !== 'undefined' ? window.innerHeight * 2 : 1600)) ? 'scale(1.25)' : 'scale(1)'
+            }}
+          />
+          <div 
+            className="w-2 h-2 rounded-full transition-all duration-300"
+            style={{
+              backgroundColor: '#cc785c',
+              opacity: scrollY >= (typeof window !== 'undefined' ? window.innerHeight * 2 : 1600) ? 1 : 0.3,
+              transform: scrollY >= (typeof window !== 'undefined' ? window.innerHeight * 2 : 1600) ? 'scale(1.25)' : 'scale(1)'
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Hero Section - Fixed during scroll */}
+      <section 
+        className="parallax-hero scroll-optimized bg-hero-bg flex flex-col items-center justify-between px-4 py-8"
+        style={{
+          transform: `translateY(${scrollY > (typeof window !== 'undefined' ? window.innerHeight : 0) ? -scrollY + (typeof window !== 'undefined' ? window.innerHeight : 0) : 0}px)`,
+          opacity: heroOpacity
+        }}
+      >
         <div className="flex-1 flex flex-col items-center justify-center">
           <div className={`w-full max-w-4xl mx-auto transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             
@@ -84,15 +194,25 @@ export default function Home() {
         </div>
         
         {/* Bottom Text - Always visible at bottom */}
-        <div className="text-center animate-slide-up-delayed-3 pb-4">
+        <div className="text-center animate-slide-up-delayed-3 pb-8">
           <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-work-sans text-hero-text leading-relaxed px-4">
             EVERYONE IS A BUILDER WITH CLAUDE
           </p>
         </div>
       </section>
 
-      {/* Join a Community Section */}
-      <section className="min-h-screen flex items-center justify-center px-4 py-8 animate-fade-scale relative overflow-hidden" style={{ backgroundColor: '#e5e4df' }}>
+      {/* Spacer to allow scroll */}
+      <div className="h-screen"></div>
+
+      {/* Join a Community Section - Fades in over hero */}
+      <section 
+        className="fade-in-section min-h-screen flex items-center justify-center px-4 py-8"
+        style={{ 
+          backgroundColor: '#e5e4df',
+          opacity: nextSectionOpacity,
+          transform: `translateY(${Math.max(0, (1 - nextSectionOpacity) * 50)}px)`
+        }}
+      >
         
         <div className="w-full flex justify-center items-center h-full relative z-10" style={{ maxWidth: '75vw', height: '80vh' }}>
           
