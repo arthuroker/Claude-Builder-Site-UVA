@@ -202,7 +202,7 @@ export default function Home() {
       </section>
 
       {/* How To Join Section */}
-      <section className="min-h-screen flex items-center justify-center py-8 px-4" style={{ backgroundColor: '#e5e4df' }}>
+      <section className="min-h-screen flex items-start sm:items-center justify-center py-4 sm:py-8 px-4" style={{ backgroundColor: '#e5e4df', paddingTop: 'max(2rem, 8vh)' }}>
         <div className="w-full flex flex-col items-center justify-center" style={{ width: '85vw', maxWidth: '1400px' }}>
           
           {/* Main Heading */}

@@ -92,3 +92,7 @@ logs
 
 # Storybook build outputs
 storybook-static
+
+# Claude settings
+.claude/settings.local.json
+claude
