@@ -1,6 +1,16 @@
 import { useState, useEffect } from 'react'
 import { ChevronDown, Users, Zap, BookOpen, ArrowRight, Github, Mail, ExternalLink } from 'lucide-react'
 import { Analytics } from "@vercel/analytics/next"
+import dynamic from 'next/dynamic'
+
+const Claude3DLogo = dynamic(() => import('../components/Claude3DLogo'), { 
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center w-full h-full">
+      <div className="animate-spin w-16 h-16 border-4 border-coral border-t-transparent rounded-full"></div>
+    </div>
+  )
+})
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false)
@@ -90,14 +100,29 @@ export default function Home() {
                 </div>
               </div>
               
-              {/* Right Side - Spinning Claude Logo */}
+              {/* Right Side - Interactive 3D Claude Logo */}
               <div className="flex items-center justify-center order-1 lg:order-2">
-                <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 xl:w-[28rem] xl:h-[28rem] spinning-logo">
-                  <img 
-                    src="/assets/images/claude-logo.svg" 
-                    alt="Claude Logo" 
-                    className="w-full h-full animate-spin-slow"
+                <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 xl:w-[28rem] xl:h-[28rem]">
+                  <Claude3DLogo 
+                    width={320}
+                    height={320}
+                    className="w-full h-full"
                   />
+                  {/* Fallback 2D logo - hidden by default, shown if 3D fails */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none" id="fallback-logo">
+                    <img 
+                      src="/assets/images/claude-logo.svg" 
+                      alt="Claude Logo" 
+                      className="w-full h-full animate-spin-slow"
+                      onError={() => {
+                        const fallback = document.getElementById('fallback-logo')
+                        if (fallback) {
+                          fallback.style.opacity = '1'
+                          fallback.style.pointerEvents = 'auto'
+                        }
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
               
