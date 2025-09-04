@@ -121,12 +121,14 @@ export default function Home() {
               >
                 ABOUT US:
               </h2>
-              <p 
-                className="leading-relaxed font-work-sans"
-                style={{ fontSize: '28px', color: '#191919' }}
-              >
-                Claude Builders @ UVA is a Student-Run CIO that empowers students to pursue their goals. Whether it's building a web app, studying smarter, or researching, we're here to show how Claude can help
-              </p>
+              <div style={{ transform: 'translateY(-30px)' }}>
+                <p 
+                  className="leading-relaxed font-work-sans"
+                  style={{ fontSize: '28px', color: '#191919' }}
+                >
+                  Claude Builders @ UVA is a Student-Run CIO that empowers students to pursue their goals. Whether it's building a web app, studying smarter, or researching, we're here to show how Claude can help
+                </p>
+              </div>
             </div>
             
             {/* Right side - Image */}
@@ -142,220 +144,76 @@ export default function Home() {
         </div>
       </section>
 
-      {/* What We Are About Section */}
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-charcoal mb-6">
-              What We're About
-            </h2>
-            <p className="text-xl text-sage max-w-3xl mx-auto font-medium">
-              We're a community-driven organization that bridges the gap between students and cutting-edge AI technology, fostering innovation and practical learning.
-            </p>
-          </div>
+      {/* How To Join Section */}
+      <section className="py-32 px-4" style={{ backgroundColor: '#e5e4df', minHeight: '900px' }}>
+        <div className="max-w-8xl mx-auto flex flex-col items-center justify-center h-full">
           
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="glass-card p-8 text-center hover:scale-105 transition-transform duration-300 hover:shadow-xl">
-              <div className="bg-coral w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Users size={32} className="text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-charcoal mb-4">Inclusive Community</h3>
-              <p className="text-sage font-medium">
-                A welcoming space for students from all academic backgrounds and experience levels to explore AI together.
-              </p>
-            </div>
-            
-            <div className="glass-card p-8 text-center hover:scale-105 transition-transform duration-300 hover:shadow-xl">
-              <div className="bg-sage w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                <BookOpen size={32} className="text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-charcoal mb-4">Practical Learning</h3>
-              <p className="text-sage font-medium">
-                Hands-on learning experiences with Claude AI through workshops, projects, and real-world applications.
-              </p>
-            </div>
-            
-            <div className="glass-card p-8 text-center hover:scale-105 transition-transform duration-300 hover:shadow-xl">
-              <div className="coral-gradient w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Zap size={32} className="text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-charcoal mb-4">Innovation Focus</h3>
-              <p className="text-sage font-medium">
-                Pushing boundaries and exploring innovative applications of AI across various fields and disciplines.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits Section */}
-      <section className="py-20 px-4 bg-cream">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-charcoal mb-6">
-              Why Join Us?
-            </h2>
-            <p className="text-xl text-sage max-w-3xl mx-auto font-medium">
-              Discover the unique advantages of being part of our growing community of AI enthusiasts and builders.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="flex items-start gap-4">
-                <div className="bg-coral w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Zap size={24} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-charcoal mb-2">Accelerate Your Skills</h3>
-                  <p className="text-sage font-medium">
-                    Quickly develop AI literacy and practical skills that are valuable in any field through our structured learning approach.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-4">
-                <div className="bg-sage w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Users size={24} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-charcoal mb-2">Network & Collaborate</h3>
-                  <p className="text-sage font-medium">
-                    Connect with like-minded peers, collaborate on projects, and build lasting professional relationships.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-4">
-                <div className="bg-coral w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <BookOpen size={24} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-charcoal mb-2">Exclusive Resources</h3>
-                  <p className="text-sage font-medium">
-                    Access exclusive workshops, resources, mentorship opportunities, and industry connections.
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white p-8 rounded-2xl shadow-xl border border-coral/20">
-              <h3 className="text-2xl font-bold text-charcoal mb-6">What You'll Gain</h3>
-              <ul className="space-y-4">
-                <li className="flex items-center gap-3">
-                  <div className="w-3 h-3 bg-coral rounded-full"></div>
-                  <span className="text-sage font-medium">Practical AI skills applicable to any major</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-3 h-3 bg-sage rounded-full"></div>
-                  <span className="text-sage font-medium">Portfolio of AI-powered projects</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-3 h-3 bg-coral rounded-full"></div>
-                  <span className="text-sage font-medium">Industry connections and mentorship</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-3 h-3 bg-sage rounded-full"></div>
-                  <span className="text-sage font-medium">Leadership and collaboration experience</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How to Join Section */}
-      <section className="py-20 px-4 bg-charcoal">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Ready to Join?
+          {/* Main Heading */}
+          <h2 
+            className="font-bold font-work-sans text-center mb-16" 
+            style={{ fontSize: '60px', color: '#191919' }}
+          >
+            HOW TO JOIN
           </h2>
-          <p className="text-xl text-cream mb-12 max-w-2xl mx-auto font-medium">
-            Becoming part of the Claude Builder Club @ UVA is easy. Here's how to get started on your AI journey with us.
-          </p>
           
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+          {/* Two Boxes Container */}
+          <div className="flex flex-col lg:flex-row gap-8 justify-center items-stretch w-full" style={{ width: '85%' }}>
+            
+            {/* Left Box - Step 1 */}
             <div 
-              className="rounded-2xl p-6 border-2 hover:scale-105 transition-all duration-300"
-              style={{ 
-                backgroundColor: 'rgba(240, 239, 234, 0.1)', 
-                borderColor: 'rgba(204, 120, 92, 0.3)' 
-              }}
+              className="rounded-3xl text-center flex flex-col items-center flex-1 relative"
+              style={{ backgroundColor: '#cc785c', height: '600px' }}
             >
-              <div className="bg-coral w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white font-bold text-xl">1</span>
+              <div className="flex flex-col items-center pt-8">
+                <h3 
+                  className="font-bold font-work-sans mb-6" 
+                  style={{ fontSize: '56px', color: '#191919' }}
+                >
+                  1
+                </h3>
+                <p 
+                  className="font-work-sans" 
+                  style={{ fontSize: '35px', color: '#191919' }}
+                >
+                  JOIN OUR LISTSERV
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Express Interest</h3>
-              <p className="text-cream font-medium">
-                Fill out our interest form or reach out through our contact channels to get started.
-              </p>
+              <img 
+                src="/assets/animations/claude point.gif" 
+                alt="Claude Point" 
+                className="w-48 h-48 object-contain absolute bottom-0"
+              />
             </div>
             
+            {/* Right Box - Step 2 */}
             <div 
-              className="rounded-2xl p-6 border-2 hover:scale-105 transition-all duration-300"
-              style={{ 
-                backgroundColor: 'rgba(240, 239, 234, 0.1)', 
-                borderColor: 'rgba(130, 129, 121, 0.3)' 
-              }}
+              className="rounded-3xl text-center flex flex-col items-center flex-1 relative"
+              style={{ backgroundColor: '#cc785c', height: '600px' }}
             >
-              <div className="bg-sage w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white font-bold text-xl">2</span>
+              <div className="flex flex-col items-center pt-8">
+                <h3 
+                  className="font-bold font-work-sans mb-6" 
+                  style={{ fontSize: '56px', color: '#191919' }}
+                >
+                  2
+                </h3>
+                <p 
+                  className="font-work-sans" 
+                  style={{ fontSize: '35px', color: '#191919' }}
+                >
+                  SIGN UP WITH THE<br />FORM BELOW
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Attend Events</h3>
-              <p className="text-cream font-medium">
-                Join our introductory workshop or info session to learn more about what we do.
-              </p>
+              <img 
+                src="/assets/animations/claude point.gif" 
+                alt="Claude Point" 
+                className="w-48 h-48 object-contain absolute bottom-0"
+              />
             </div>
             
-            <div 
-              className="rounded-2xl p-6 border-2 hover:scale-105 transition-all duration-300"
-              style={{ 
-                backgroundColor: 'rgba(240, 239, 234, 0.1)', 
-                borderColor: 'rgba(204, 120, 92, 0.3)' 
-              }}
-            >
-              <div className="bg-coral w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white font-bold text-xl">3</span>
-              </div>
-              <h3 className="text-xl font-bold text-white mb-3">Start Building</h3>
-              <p className="text-cream font-medium">
-                Begin your journey with our onboarding program and dive into your first project.
-              </p>
-            </div>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="group bg-white text-charcoal hover:bg-cream px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg">
-              <Mail size={20} />
-              Contact Us
-              <ExternalLink size={16} className="group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button className="group border-2 border-coral text-coral hover:bg-coral hover:text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2">
-              <Github size={20} />
-              View Projects
-              <ExternalLink size={16} className="group-hover:translate-x-1 transition-transform" />
-            </button>
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-charcoal text-white py-12 px-4 border-t border-coral/30">
-        <div className="max-w-4xl mx-auto text-center">
-          <h3 className="text-2xl font-bold mb-4 text-coral">Claude Builder Club @ UVA</h3>
-          <p className="text-cream mb-6 font-medium">
-            Empowering the next generation of AI-powered builders and innovators.
-          </p>
-          <div className="flex justify-center gap-6">
-            <button className="text-sage hover:text-coral transition-colors duration-300">
-              <Mail size={24} />
-            </button>
-            <button className="text-sage hover:text-coral transition-colors duration-300">
-              <Github size={24} />
-            </button>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }

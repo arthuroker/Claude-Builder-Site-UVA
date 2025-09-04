@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/C:\\Users\\arthur\\Documents\\Claude-Builder-at-UVA-Site\\Claude Builder Club @ UVA\\styles/**)",
+      "Read(/C:\\Users\\arthur\\Documents\\Claude-Builder-at-UVA-Site\\Claude Builder Club @ UVA\\public\\assets\\images/**)",
+      "Read(/C:\\Users\\arthur\\Documents\\Claude-Builder-at-UVA-Site\\Claude Builder Club @ UVA\\pages/**)",
+      "Read(/C:\\Users\\arthur\\Documents\\Claude-Builder-at-UVA-Site\\Claude Builder Club @ UVA/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
