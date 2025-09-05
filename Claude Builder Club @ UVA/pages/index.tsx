@@ -432,8 +432,8 @@ export default function Home() {
                   </h3>
                 </div>
 
-                {/* Bottom - Pulsating GIF with Floating Arrow */}
-                <div className="flex justify-center pb-2 relative">
+                {/* Bottom - Pulsating GIF */}
+                <div className="flex justify-center pb-2">
                   <img
                     src="/assets/animations/claude point.gif"
                     alt="Claude Point"
@@ -443,20 +443,6 @@ export default function Home() {
                       height: 'clamp(6rem, 8vw, 9rem)',
                     }}
                   />
-                  {/* Floating Arrow pointing to GIF */}
-                  <div 
-                    className="absolute animate-bounce"
-                    style={{
-                      top: '-4rem',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      fontSize: 'clamp(1.5rem, 2.5vw, 2.5rem)',
-                      color: '#191919',
-                      opacity: 0.7
-                    }}
-                  >
-                    ↓
-                  </div>
                 </div>
               </a>
             ))}
