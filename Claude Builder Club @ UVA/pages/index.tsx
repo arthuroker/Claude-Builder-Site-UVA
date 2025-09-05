@@ -10,12 +10,19 @@ export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [showScrollHint, setShowScrollHint] = useState(true)
   const [heroOpacity, setHeroOpacity] = useState(1)
+  const [displayedText, setDisplayedText] = useState('')
+  const [currentTextIndex, setCurrentTextIndex] = useState(0)
+  const [aboutUsVisible, setAboutUsVisible] = useState(false)
+  const [howToJoinVisible, setHowToJoinVisible] = useState(false)
+  const [showStep1, setShowStep1] = useState(false)
+  const [showStep2, setShowStep2] = useState(false)
 
   const benefits = [
     "FREE CLAUDE PRO",
     "$50 IN API CREDITS", 
-    "ACCESS TO AN EXCLUSIVE HACKATHON WITH THOUSANDS OF $$$ UP FOR GRABS",
+    "AN EXCLUSIVE HACKATHON WITH THOUSANDS OF $$$ IN PRIZES",
     "ANTHROPIC STAFF GUEST LECTURES",
+    "FREE ANTHROPIC MERCH",
     "AND MORE..."
   ]
 
@@ -23,13 +30,24 @@ export default function Home() {
     setIsVisible(true)
   }, [])
 
+  // Typewriter effect for benefits
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentBenefit((prev) => (prev + 1) % benefits.length)
-    }, 3000) // Change every 3 seconds
-
-    return () => clearInterval(interval)
-  }, [])
+    const currentText = benefits[currentTextIndex]
+    
+    if (displayedText.length < currentText.length) {
+      const timer = setTimeout(() => {
+        setDisplayedText(currentText.slice(0, displayedText.length + 1))
+      }, 80) // Soft typing speed
+      return () => clearTimeout(timer)
+    } else {
+      // Wait before starting next text
+      const timer = setTimeout(() => {
+        setDisplayedText('')
+        setCurrentTextIndex((prev) => (prev + 1) % benefits.length)
+      }, 2500)
+      return () => clearTimeout(timer)
+    }
+  }, [displayedText, currentTextIndex, benefits])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,9 +66,9 @@ export default function Home() {
         setShowScrollHint(false)
       }
       
-      // Calculate hero fade-out - fade out faster but not too fast
-      const heroFadeStart = windowHeight * 0.25
-      const heroFadeEnd = windowHeight * 0.6
+      // Calculate hero fade-out - fade out a bit slower
+      const heroFadeStart = windowHeight * 0.3
+      const heroFadeEnd = windowHeight * 0.75
       
       if (scrolled >= heroFadeStart && scrolled <= heroFadeEnd) {
         const heroProgress = (scrolled - heroFadeStart) / (heroFadeEnd - heroFadeStart)
@@ -61,8 +79,8 @@ export default function Home() {
         setHeroOpacity(0)
       }
       
-      // Calculate opacity for next section fade-in - faster white fade
-      const fadeStart = windowHeight * 0.4
+      // Calculate opacity for next section fade-in - start sooner
+      const fadeStart = windowHeight * 0.15
       const fadeEnd = windowHeight * 0.8
       
       if (scrolled >= fadeStart && scrolled <= fadeEnd) {
@@ -73,11 +91,25 @@ export default function Home() {
       } else {
         setNextSectionOpacity(1)
       }
+      
+      // Check if About Us section is more centered on screen (much later trigger)
+      if (scrolled > windowHeight * 1.5 && !aboutUsVisible) {
+        setAboutUsVisible(true)
+      }
+      
+      // Check if How To Join section is in view
+      if (scrolled > windowHeight * 2.8 && !howToJoinVisible) {
+        setHowToJoinVisible(true)
+        
+        // Sequential animations with delays
+        setTimeout(() => setShowStep1(true), 800)
+        setTimeout(() => setShowStep2(true), 1600)
+      }
     }
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [showScrollHint])
+  }, [showScrollHint, aboutUsVisible, howToJoinVisible])
 
   const scrollToBottom = () => {
     window.scrollTo({
@@ -107,7 +139,10 @@ export default function Home() {
       {/* Side Scroll Dots */}
       <div 
         className="scroll-dots"
-        style={{ opacity: scrollY > 100 ? 1 : 0 }}
+        style={{ 
+          opacity: scrollY > (typeof window !== 'undefined' ? window.innerHeight * 0.3 : 240) ? 1 : 0,
+          zIndex: 30
+        }}
       >
         <div className="flex flex-col space-y-3">
           <div 
@@ -218,83 +253,71 @@ export default function Home() {
           
           <div 
             className="rounded-3xl px-8 py-12 md:px-12 md:py-16 lg:px-16 lg:py-20 text-center w-full h-full flex flex-col justify-center animate-slide-up-delayed relative overflow-hidden"
-            style={{ backgroundColor: '#cc785c' }}
+            style={{ backgroundColor: '#E5E4DF' }}
           >
-            {/* Claude Logo in center background */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
-              <img 
-                src="/assets/images/claude-logo.svg" 
-                alt="Claude Logo Background" 
-                className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 xl:w-96 xl:h-96 animate-pulse-gentle"
-              />
-            </div>
-            
-            {/* Main Heading */}
-            <h2 className="font-bold font-work-sans mb-4 md:mb-6 lg:mb-8 leading-tight relative z-10" style={{ 
-              color: '#191919',
-              fontSize: 'clamp(1.25rem, 3.5vw, 3rem)'
-            }}>
-              JOIN A COMMUNITY OF THINKERS,<br />
-              BUILDERS, AND DOERS WHERE<br />
-              YOU'LL HAVE ACCESS TO:
-            </h2>
-            
-            {/* Benefits Carousel */}
-            <div className="mb-4 md:mb-6 lg:mb-8 relative z-10 font-work-sans" style={{ 
-              color: '#191919',
-              fontSize: 'clamp(0.875rem, 2.25vw, 2rem)'
-            }}>
-              <div className="relative w-full text-center h-16 md:h-20 lg:h-24 flex items-center justify-center overflow-hidden">
-                <p 
-                  key={currentBenefit}
-                  className="animate-fade-in px-4 leading-tight"
-                  style={{
-                    textShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                    animation: 'fadeInUp 1s ease-out'
-                  }}
-                >
-                  {benefits[currentBenefit]}
-                </p>
+            <div className="flex flex-col h-full justify-between py-8">
+              {/* Main Heading - moved closer to top with wider container */}
+              <div className="responsive-container px-fluid">
+                <h2 className="font-bold font-work-sans mb-8 md:mb-12 lg:mb-16 leading-tight relative z-10" style={{ 
+                  color: '#191919',
+                  fontSize: 'clamp(1rem, 2.5vw, 2.25rem)'
+                }}>
+                  JOIN A COMMUNITY OF<br />
+                  THINKERS, BUILDERS, AND DOERS<br />
+                  WHERE YOU'LL HAVE ACCESS TO:
+                </h2>
               </div>
               
-              {/* Progress indicators */}
-              <div className="flex justify-center space-x-2 mt-4">
-                {benefits.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      index === currentBenefit ? 'bg-opacity-80 scale-125' : 'bg-opacity-30 scale-100'
-                    }`}
-                    style={{ backgroundColor: '#191919' }}
-                  /> 
-                ))}
+              {/* Typewriter Benefits - smack dab in the middle */}
+              <div className="absolute inset-0 flex items-center justify-center z-10 font-work-sans" style={{ 
+                color: '#191919',
+                fontSize: 'clamp(2rem, 5vw, 4rem)'
+              }}>
+                <div className="w-full max-w-5xl mx-auto text-center">
+                  <p className="px-4 leading-tight">
+                    {displayedText}
+                    <span className="animate-pulse">|</span>
+                  </p>
+                </div>
               </div>
-            </div>
-            
-            {/* Join Us Button */}
-            <div className="flex justify-center">
-              <button 
-                onClick={scrollToBottom}
-                className="px-6 py-3 md:px-8 md:py-4 lg:px-12 lg:py-6 rounded-xl font-medium font-work-sans hover:scale-105 transition-all duration-300 relative z-10 animate-slide-up-delayed-3 touch-target cursor-pointer"
-                style={{ 
-                  backgroundColor: '#d4a27f',
-                  color: '#191919',
-                  fontSize: 'clamp(0.875rem, 2vw, 1.75rem)'
-                }}
-              >
-                JOIN US
-              </button>
+              
+              {/* Join Us Button - moved lower */}
+              <div className="flex justify-center mb-4">
+                <button 
+                  onClick={scrollToBottom}
+                  className="px-6 py-3 md:px-8 md:py-4 lg:px-12 lg:py-6 rounded-xl font-medium font-work-sans hover:scale-105 transition-all duration-300 relative z-10 animate-slide-up-delayed-3 touch-target cursor-pointer"
+                  style={{ 
+                    backgroundColor: '#d4a27f',
+                    color: '#191919',
+                    fontSize: 'clamp(0.875rem, 2vw, 1.75rem)'
+                  }}
+                >
+                  JOIN US
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Background Color Fade Transition */}
+      <div 
+        className="h-24"
+        style={{
+          background: 'linear-gradient(to bottom, #e5e4df 0%, #fafaf7 10%)'
+        }}
+      />
 
       {/* About Us Section */}
       <section className="min-h-screen flex items-center justify-center py-16 md:py-24 lg:py-32 px-4" style={{ backgroundColor: '#fafaf7' }}>
         <div className="mx-auto flex justify-center items-center h-full" style={{ width: '80vw', maxWidth: '1400px' }}>
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-12 lg:gap-16 w-full">
             {/* Left side - Text content */}
-            <div className="flex-1 text-center flex flex-col justify-center">
+            <div 
+              className={`flex-1 text-center flex flex-col justify-center transition-opacity duration-[2000ms] ${
+                aboutUsVisible ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
               <h2 
                 className="font-bold font-work-sans mb-6 md:mb-8 lg:mb-10 text-2xl md:text-3xl lg:text-4xl xl:text-5xl" 
                 style={{ color: '#191919' }}
@@ -305,44 +328,73 @@ export default function Home() {
                 className="leading-relaxed font-work-sans text-base md:text-lg lg:text-xl xl:text-2xl"
                 style={{ color: '#191919' }}
               >
-                Claude Builders @ UVA is a Student-Run CIO that empowers students to pursue their goals. Whether it's building a web app, studying smarter, or researching, we're here to show how Claude can help
+                Claude Builders @ UVA is a Student-Run CIO that empowers students to pursue their goals. Whether it's building a web app, studying smarter, or researching faster, we're here to show how Claude can help
               </p>
             </div>
             
             {/* Right side - Image */}
-            <div className="flex-1 flex justify-center items-center">
+            <div 
+              className={`flex-1 flex justify-center items-center transition-all duration-[2000ms] delay-500 ${
+                aboutUsVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
+              }`}
+            >
               <img 
                 src="/assets/images/horizontal.png" 
                 alt="About Us" 
                 className="w-full h-auto object-cover rounded-lg"
-                style={{ maxHeight: '400px' }}
+                style={{ 
+                  maxHeight: '400px',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)'
+                }}
               />
             </div>
           </div>
         </div>
       </section>
 
+      {/* Background Color Fade Transition to How To Join */}
+      <div 
+        className="h-24"
+        style={{
+          background: 'linear-gradient(to bottom, #fafaf7 0%, #e5e4df 10%)'
+        }}
+      />
+
       {/* How To Join Section */}
       <section className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#e5e4df', paddingTop: '2rem', paddingBottom: '2rem' }}>
         <div className="w-full flex flex-col items-center justify-center" style={{ width: '85vw', maxWidth: '1400px' }}>
           
           {/* Main Heading */}
-          <h2 
-            className="font-bold font-work-sans text-center mb-4 sm:mb-8" 
-            style={{ 
-              color: '#191919',
-              fontSize: 'clamp(2rem, 4vw, 4rem)'
-            }}
-          >
-            HOW TO JOIN
-          </h2>
+          <div className="text-center mb-4 sm:mb-8">
+            <h2 
+              className="font-bold font-work-sans mb-2" 
+              style={{ 
+                color: '#191919',
+                fontSize: 'clamp(2rem, 4vw, 4rem)'
+              }}
+            >
+              HOW TO JOIN
+            </h2>
+            
+            {/* Sliding Bar */}
+            <div className="flex justify-center">
+              <div 
+                className={`h-1 bg-current transition-all duration-1000 ${
+                  howToJoinVisible ? 'w-48' : 'w-0'
+                }`}
+                style={{ backgroundColor: '#191919' }}
+              />
+            </div>
+          </div>
           
           {/* Two Boxes Container */}
           <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 justify-center items-stretch w-full" style={{ height: 'auto', minHeight: 'auto' }}>
             
             {/* Left Box - Step 1 */}
             <div 
-              className="rounded-3xl text-center flex flex-col justify-between flex-1 relative p-4 sm:p-6 md:p-8 h-96 sm:h-auto"
+              className={`rounded-3xl text-center flex flex-col justify-between flex-1 relative p-4 sm:p-6 md:p-8 h-96 sm:h-auto transition-all duration-1000 ${
+                showStep1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
               style={{ backgroundColor: '#cc785c', minHeight: '350px' }}
             >
               {/* Top - Number and Text */}
@@ -402,7 +454,9 @@ export default function Home() {
             
             {/* Right Box - Step 2 */}
             <div 
-              className="rounded-3xl text-center flex flex-col justify-between flex-1 relative p-4 sm:p-6 md:p-8 h-96 sm:h-auto"
+              className={`rounded-3xl text-center flex flex-col justify-between flex-1 relative p-4 sm:p-6 md:p-8 h-96 sm:h-auto transition-all duration-1000 ${
+                showStep2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
               style={{ backgroundColor: '#cc785c', minHeight: '350px' }}
             >
               {/* Top - Number and Text */}
