@@ -396,23 +396,16 @@ export default function Home() {
             </div>
           </div>
           
-{/* Two Boxes Container */}
+{/* Sign Up Card Container */}
           <div className="flex flex-col lg:flex-row gap-6 justify-center items-stretch w-full max-w-4xl mx-auto">
             {/* Step Card Template - Reusable */}
             {[
               {
                 step: '1',
-                label: 'JOIN OUR LISTSERV',
-                href: 'https://lists.virginia.edu/sympa/subscribe/claudebuildersatuva',
-                cta: 'SUBSCRIBE',
-                show: showStep1,
-              },
-              {
-                step: '2',
                 label: 'SIGN UP BELOW',
-                href: 'https://forms.gle/3q6seqwNxMuKLaUg7',
+                href: 'https://forms.gle/LafYSKUpgsUFzvXB9',
                 cta: 'SIGN UP',
-                show: showStep2,
+                show: showStep1,
               },
             ].map(({ step, label, href, cta, show }, i) => (
               <div
