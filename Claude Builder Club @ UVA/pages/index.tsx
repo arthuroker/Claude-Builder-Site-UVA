@@ -396,144 +396,95 @@ export default function Home() {
             </div>
           </div>
           
-          {/* Two Boxes Container */}
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 justify-center items-stretch w-full" style={{ height: 'auto', minHeight: 'auto' }}>
-            
-            {/* Left Box - Step 1 */}
-            <div 
-              className={`rounded-3xl text-center flex flex-col justify-between flex-1 relative transition-all duration-1000 ${
-                showStep1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
-              style={{ 
-                backgroundColor: '#cc785c', 
-                minHeight: 'clamp(350px, 40vh, 500px)',
-                padding: 'clamp(1rem, 2vw + 0.5rem, 2.5rem)'
-              }}
-            >
-              {/* Top - Number and Text */}
-              <div className="flex flex-col items-center space-y-6">
-                <h3 
-                  className="font-bold font-work-sans" 
-                  style={{ 
-                    color: '#191919',
-                    fontSize: 'clamp(3rem, 4rem + 1vw, 6rem)'
-                  }}
-                >
-                  1
-                </h3>
-                <p 
-                  className="font-work-sans" 
-                  style={{ 
-                    color: '#191919',
-                    fontSize: 'clamp(1rem, 1.25rem + 0.5vw, 1.75rem)'
-                  }}
-                >
-                  JOIN OUR LISTSERV
-                </p>
+{/* Two Boxes Container */}
+          <div className="flex flex-col lg:flex-row gap-6 justify-center items-stretch w-full max-w-4xl mx-auto">
+            {/* Step Card Template - Reusable */}
+            {[
+              {
+                step: '1',
+                label: 'JOIN OUR LISTSERV',
+                href: 'https://lists.virginia.edu/sympa/subscribe/claudebuildersatuva',
+                cta: 'SUBSCRIBE',
+                show: showStep1,
+              },
+              {
+                step: '2',
+                label: 'SIGN UP BELOW',
+                href: 'https://forms.gle/3q6seqwNxMuKLaUg7',
+                cta: 'SIGN UP',
+                show: showStep2,
+              },
+            ].map(({ step, label, href, cta, show }, i) => (
+              <div
+                key={i}
+                className={`rounded-3xl text-center flex flex-col justify-between flex-1 relative transition-all duration-700 ${
+                  show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+                }`}
+                style={{
+                  backgroundColor: '#cc785c',
+                  minHeight: 'clamp(320px, 40vh, 450px)',
+                  padding: 'clamp(1.5rem, 2.5vw, 2.5rem)',
+                }}
+              >
+                {/* Top - Number and Text with proper spacing */}
+                <div className="flex flex-col items-center space-y-6 pt-2">
+                  <h3
+                    className="font-bold font-work-sans leading-tight"
+                    style={{
+                      color: '#191919',
+                      fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+                    }}
+                  >
+                    {step}
+                  </h3>
+                  <p
+                    className="font-work-sans leading-tight tracking-tight"
+                    style={{
+                      color: '#191919',
+                      fontSize: 'clamp(1rem, 1.5vw, 1.5rem)',
+                    }}
+                  >
+                    {label}
+                  </p>
+                </div>
+
+                {/* Middle - Button with proper vertical spacing */}
+                <div className="flex justify-center py-8">
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-xl font-medium font-work-sans hover:scale-[1.03] transition-all duration-300 touch-target flex items-center justify-center"
+                    style={{
+                      backgroundColor: '#d4a27f',
+                      color: '#191919',
+                      fontSize: 'clamp(0.875rem, 1.25vw, 1.25rem)',
+                      padding: 'clamp(0.75rem, 1.5vw, 1.25rem) clamp(1.5rem, 2.5vw, 2.5rem)',
+                      minHeight: 'clamp(3rem, 4vw, 4rem)',
+                    }}
+                  >
+                    {cta}
+                  </a>
+                </div>
+
+                {/* Bottom - GIF with proper spacing */}
+                <div className="flex justify-center pb-2">
+                  <img
+                    src="/assets/animations/claude point.gif"
+                    alt="Claude Point"
+                    className="object-contain rounded-2xl"
+                    style={{
+                      width: 'clamp(6rem, 8vw, 9rem)',
+                      height: 'clamp(6rem, 8vw, 9rem)',
+                    }}
+                  />
+                </div>
               </div>
-              
-              {/* Middle - Button */}
-              <div className="flex justify-center">
-                <a 
-                  href="https://lists.virginia.edu/sympa/subscribe/claudebuildersatuva"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-xl font-medium font-work-sans hover:scale-105 transition-all duration-300 touch-target flex items-center justify-center"
-                  style={{ 
-                    backgroundColor: '#d4a27f',
-                    color: '#191919',
-                    fontSize: 'clamp(0.875rem, 1rem + 0.25vw, 1.25rem)',
-                    padding: 'clamp(0.75rem, 1rem + 0.15vw, 1.25rem) clamp(1.5rem, 2rem + 0.5vw, 2.5rem)',
-                    minHeight: 'clamp(3rem, 3.5rem + 0.5vw, 4rem)'
-                  }}
-                >
-                  SUBSCRIBE
-                </a>
-              </div>
-              
-              {/* Bottom - GIF */}
-              <div className="flex justify-center">
-                <img 
-                  src="/assets/animations/claude point.gif" 
-                  alt="Claude Point" 
-                  className="object-contain rounded-2xl"
-                  style={{
-                    width: 'clamp(6rem, 10vw, 10rem)',
-                    height: 'clamp(6rem, 10vw, 10rem)'
-                  }}
-                />
-              </div>
-            </div>
-            
-            {/* Right Box - Step 2 */}
-            <div 
-              className={`rounded-3xl text-center flex flex-col justify-between flex-1 relative transition-all duration-1000 ${
-                showStep2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
-              style={{ 
-                backgroundColor: '#cc785c', 
-                minHeight: 'clamp(350px, 40vh, 500px)',
-                padding: 'clamp(1rem, 2vw + 0.5rem, 2.5rem)'
-              }}
-            >
-              {/* Top - Number and Text */}
-              <div className="flex flex-col items-center space-y-6">
-                <h3 
-                  className="font-bold font-work-sans" 
-                  style={{ 
-                    color: '#191919',
-                    fontSize: 'clamp(3rem, 4rem + 1vw, 6rem)'
-                  }}
-                >
-                  2
-                </h3>
-                <p 
-                  className="font-work-sans" 
-                  style={{ 
-                    color: '#191919',
-                    fontSize: 'clamp(1rem, 1.25rem + 0.5vw, 1.75rem)'
-                  }}
-                >
-                  SIGN UP BELOW
-                </p>
-              </div>
-              
-              {/* Middle - Button */}
-              <div className="flex justify-center">
-                <a 
-                  href="https://forms.gle/3q6seqwNxMuKLaUg7"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-xl font-medium font-work-sans hover:scale-105 transition-all duration-300 touch-target flex items-center justify-center"
-                  style={{ 
-                    backgroundColor: '#d4a27f',
-                    color: '#191919',
-                    fontSize: 'clamp(0.875rem, 1rem + 0.25vw, 1.25rem)',
-                    padding: 'clamp(0.75rem, 1rem + 0.15vw, 1.25rem) clamp(1.5rem, 2rem + 0.5vw, 2.5rem)',
-                    minHeight: 'clamp(3rem, 3.5rem + 0.5vw, 4rem)'
-                  }}
-                >
-                  SIGN UP
-                </a>
-              </div>
-              
-              {/* Bottom - GIF */}
-              <div className="flex justify-center">
-                <img 
-                  src="/assets/animations/claude point.gif" 
-                  alt="Claude Point" 
-                  className="object-contain rounded-2xl"
-                  style={{
-                    width: 'clamp(6rem, 10vw, 10rem)',
-                    height: 'clamp(6rem, 10vw, 10rem)'
-                  }}
-                />
-              </div>
-            </div>
-            
+            ))}
           </div>
         </div>
       </section>
+
       <Analytics />
     </div>
   )
