@@ -320,14 +320,21 @@ export default function Home() {
               }`}
             >
               <h2 
-                className="font-bold font-work-sans mb-6 md:mb-8 lg:mb-10 text-2xl md:text-3xl lg:text-4xl xl:text-5xl" 
-                style={{ color: '#191919' }}
+                className="font-bold font-work-sans mb-6 md:mb-8 lg:mb-10" 
+                style={{ 
+                  color: '#191919',
+                  fontSize: 'clamp(1.5rem, 2rem + 1vw, 3rem)'
+                }}
               >
                 ABOUT US:
               </h2>
               <p 
-                className="leading-relaxed font-work-sans text-base md:text-lg lg:text-xl xl:text-2xl"
-                style={{ color: '#191919' }}
+                className="leading-relaxed font-work-sans"
+                style={{ 
+                  color: '#191919',
+                  fontSize: 'clamp(1rem, 1.125rem + 0.5vw, 1.5rem)',
+                  lineHeight: 'clamp(1.5, 1.6, 1.7)'
+                }}
               >
                 Claude Builders @ UVA is a Student-Run CIO that empowers students to pursue their goals. Whether it's building a web app, studying smarter, or researching faster, we're here to show how Claude can help
               </p>
@@ -344,7 +351,8 @@ export default function Home() {
                 alt="About Us" 
                 className="w-full h-auto object-cover rounded-lg"
                 style={{ 
-                  maxHeight: '400px',
+                  maxHeight: 'clamp(300px, 35vh, 500px)',
+                  maxWidth: 'clamp(250px, 90%, 600px)',
                   boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)'
                 }}
               />
@@ -363,7 +371,7 @@ export default function Home() {
 
       {/* How To Join Section */}
       <section className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#e5e4df', paddingTop: '2rem', paddingBottom: '2rem' }}>
-        <div className="w-full flex flex-col items-center justify-center" style={{ width: '85vw', maxWidth: '1400px' }}>
+        <div className="w-full max-w-sm sm:max-w-3xl md:max-w-5xl lg:max-w-6xl xl:max-w-7xl flex flex-col items-center justify-center mx-auto px-4">
           
           {/* Main Heading */}
           <div className="text-center mb-4 sm:mb-8">
