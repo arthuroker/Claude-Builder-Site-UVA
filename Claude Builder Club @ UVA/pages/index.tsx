@@ -415,8 +415,8 @@ export default function Home() {
                 }`}
                 style={{
                   backgroundColor: '#cc785c',
-                  minHeight: 'clamp(320px, 40vh, 450px)',
-                  padding: 'clamp(1.5rem, 2.5vw, 2.5rem)',
+                  minHeight: 'clamp(400px, 50vh, 500px)',
+                  padding: 'clamp(2rem, 3vw, 3rem)',
                 }}
               >
                 {/* Top - Large Sign Up Text */}
