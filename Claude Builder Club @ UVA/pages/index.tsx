@@ -249,18 +249,18 @@ export default function Home() {
         }}
       >
         
-        <div className="w-full flex justify-center items-center h-full relative z-10" style={{ maxWidth: '75vw', height: '80vh' }}>
+        <div className="w-full max-w-sm sm:max-w-2xl md:max-w-4xl lg:max-w-5xl xl:max-w-6xl flex justify-center items-center h-full relative z-10 mx-auto px-4">
           
           <div 
-            className="rounded-3xl px-8 py-12 md:px-12 md:py-16 lg:px-16 lg:py-20 text-center w-full h-full flex flex-col justify-center animate-slide-up-delayed relative overflow-hidden"
+            className="rounded-3xl px-8 py-24 md:px-16 md:py-32 lg:px-20 lg:py-40 text-center w-full min-h-[80vh] sm:min-h-[85vh] md:min-h-[90vh] flex flex-col justify-center animate-slide-up-delayed relative overflow-hidden"
             style={{ backgroundColor: '#E5E4DF' }}
           >
-            <div className="flex flex-col h-full justify-between py-8">
-              {/* Main Heading - moved closer to top with wider container */}
-              <div className="responsive-container px-fluid">
-                <h2 className="font-bold font-work-sans mb-8 md:mb-12 lg:mb-16 leading-tight relative z-10" style={{ 
+            <div className="flex flex-col justify-between h-full space-y-16 md:space-y-20 lg:space-y-24">
+              {/* Main Heading - top */}
+              <div className="flex-shrink-0">
+                <h2 className="font-bold font-work-sans leading-tight relative z-10" style={{ 
                   color: '#191919',
-                  fontSize: 'clamp(1rem, 2.5vw, 2.25rem)'
+                  fontSize: 'clamp(1.25rem, 1.5rem + 0.5vw, 2.25rem)'
                 }}>
                   JOIN A COMMUNITY OF<br />
                   THINKERS, BUILDERS, AND DOERS<br />
@@ -268,10 +268,10 @@ export default function Home() {
                 </h2>
               </div>
               
-              {/* Typewriter Benefits - smack dab in the middle */}
-              <div className="absolute inset-0 flex items-center justify-center z-10 font-work-sans" style={{ 
+              {/* Typewriter Benefits - center */}
+              <div className="flex-1 flex items-center justify-center z-10 font-work-sans" style={{ 
                 color: '#191919',
-                fontSize: 'clamp(2rem, 5vw, 4rem)'
+                fontSize: 'clamp(1.75rem, 2rem + 1vw, 3.5rem)'
               }}>
                 <div className="w-full max-w-5xl mx-auto text-center">
                   <p className="px-4 leading-tight">
@@ -281,15 +281,16 @@ export default function Home() {
                 </div>
               </div>
               
-              {/* Join Us Button - moved lower */}
-              <div className="flex justify-center mb-4">
+              {/* Join Us Button - bottom */}
+              <div className="flex-shrink-0 flex justify-center">
                 <button 
                   onClick={scrollToBottom}
-                  className="px-6 py-3 md:px-8 md:py-4 lg:px-12 lg:py-6 rounded-xl font-medium font-work-sans hover:scale-105 transition-all duration-300 relative z-10 animate-slide-up-delayed-3 touch-target cursor-pointer"
+                  className="font-medium font-work-sans hover:scale-105 transition-all duration-300 relative z-10 animate-slide-up-delayed-3 touch-target cursor-pointer rounded-xl"
                   style={{ 
                     backgroundColor: '#d4a27f',
                     color: '#191919',
-                    fontSize: 'clamp(0.875rem, 2vw, 1.75rem)'
+                    fontSize: 'clamp(0.875rem, 1rem + 0.5vw, 1.75rem)',
+                    padding: 'clamp(0.75rem, 1rem + 0.25vw, 1.5rem) clamp(1.5rem, 2rem + 1vw, 3rem)'
                   }}
                 >
                   JOIN US
@@ -310,8 +311,8 @@ export default function Home() {
 
       {/* About Us Section */}
       <section className="min-h-screen flex items-center justify-center py-16 md:py-24 lg:py-32 px-4" style={{ backgroundColor: '#fafaf7' }}>
-        <div className="mx-auto flex justify-center items-center h-full" style={{ width: '80vw', maxWidth: '1400px' }}>
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-12 lg:gap-16 w-full">
+        <div className="mx-auto flex justify-center items-center h-full w-full max-w-sm sm:max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl">
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-8 md:gap-12 lg:gap-16 xl:gap-20 w-full">
             {/* Left side - Text content */}
             <div 
               className={`flex-1 text-center flex flex-col justify-center transition-opacity duration-[2000ms] ${
@@ -370,7 +371,7 @@ export default function Home() {
               className="font-bold font-work-sans mb-2" 
               style={{ 
                 color: '#191919',
-                fontSize: 'clamp(2rem, 4vw, 4rem)'
+                fontSize: 'clamp(2rem, 2.5rem + 0.75vw, 3.5rem)'
               }}
             >
               HOW TO JOIN
@@ -388,22 +389,26 @@ export default function Home() {
           </div>
           
           {/* Two Boxes Container */}
-          <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 justify-center items-stretch w-full" style={{ height: 'auto', minHeight: 'auto' }}>
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 justify-center items-stretch w-full" style={{ height: 'auto', minHeight: 'auto' }}>
             
             {/* Left Box - Step 1 */}
             <div 
-              className={`rounded-3xl text-center flex flex-col justify-between flex-1 relative p-4 sm:p-6 md:p-8 h-96 sm:h-auto transition-all duration-1000 ${
+              className={`rounded-3xl text-center flex flex-col justify-between flex-1 relative transition-all duration-1000 ${
                 showStep1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
-              style={{ backgroundColor: '#cc785c', minHeight: '350px' }}
+              style={{ 
+                backgroundColor: '#cc785c', 
+                minHeight: 'clamp(350px, 40vh, 500px)',
+                padding: 'clamp(1rem, 2vw + 0.5rem, 2.5rem)'
+              }}
             >
               {/* Top - Number and Text */}
-              <div className="flex flex-col items-center space-y-4">
+              <div className="flex flex-col items-center space-y-6">
                 <h3 
                   className="font-bold font-work-sans" 
                   style={{ 
                     color: '#191919',
-                    fontSize: 'clamp(3rem, 6vw, 8rem)'
+                    fontSize: 'clamp(3rem, 4rem + 1vw, 6rem)'
                   }}
                 >
                   1
@@ -412,7 +417,7 @@ export default function Home() {
                   className="font-work-sans" 
                   style={{ 
                     color: '#191919',
-                    fontSize: 'clamp(1rem, 2.5vw, 2.5rem)'
+                    fontSize: 'clamp(1rem, 1.25rem + 0.5vw, 1.75rem)'
                   }}
                 >
                   JOIN OUR LISTSERV
@@ -429,9 +434,9 @@ export default function Home() {
                   style={{ 
                     backgroundColor: '#d4a27f',
                     color: '#191919',
-                    fontSize: 'clamp(0.875rem, 1.75vw, 1.5rem)',
-                    padding: 'clamp(0.75rem, 1.5vw, 1.25rem) clamp(1.5rem, 3vw, 2.5rem)',
-                    minHeight: 'clamp(3rem, 4.5vw, 4rem)'
+                    fontSize: 'clamp(0.875rem, 1rem + 0.25vw, 1.25rem)',
+                    padding: 'clamp(0.75rem, 1rem + 0.15vw, 1.25rem) clamp(1.5rem, 2rem + 0.5vw, 2.5rem)',
+                    minHeight: 'clamp(3rem, 3.5rem + 0.5vw, 4rem)'
                   }}
                 >
                   SUBSCRIBE
@@ -454,18 +459,22 @@ export default function Home() {
             
             {/* Right Box - Step 2 */}
             <div 
-              className={`rounded-3xl text-center flex flex-col justify-between flex-1 relative p-4 sm:p-6 md:p-8 h-96 sm:h-auto transition-all duration-1000 ${
+              className={`rounded-3xl text-center flex flex-col justify-between flex-1 relative transition-all duration-1000 ${
                 showStep2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
-              style={{ backgroundColor: '#cc785c', minHeight: '350px' }}
+              style={{ 
+                backgroundColor: '#cc785c', 
+                minHeight: 'clamp(350px, 40vh, 500px)',
+                padding: 'clamp(1rem, 2vw + 0.5rem, 2.5rem)'
+              }}
             >
               {/* Top - Number and Text */}
-              <div className="flex flex-col items-center space-y-4">
+              <div className="flex flex-col items-center space-y-6">
                 <h3 
                   className="font-bold font-work-sans" 
                   style={{ 
                     color: '#191919',
-                    fontSize: 'clamp(3rem, 6vw, 8rem)'
+                    fontSize: 'clamp(3rem, 4rem + 1vw, 6rem)'
                   }}
                 >
                   2
@@ -474,7 +483,7 @@ export default function Home() {
                   className="font-work-sans" 
                   style={{ 
                     color: '#191919',
-                    fontSize: 'clamp(1rem, 2.5vw, 2.5rem)'
+                    fontSize: 'clamp(1rem, 1.25rem + 0.5vw, 1.75rem)'
                   }}
                 >
                   SIGN UP BELOW
@@ -491,9 +500,9 @@ export default function Home() {
                   style={{ 
                     backgroundColor: '#d4a27f',
                     color: '#191919',
-                    fontSize: 'clamp(0.875rem, 1.75vw, 1.5rem)',
-                    padding: 'clamp(0.75rem, 1.5vw, 1.25rem) clamp(1.5rem, 3vw, 2.5rem)',
-                    minHeight: 'clamp(3rem, 4.5vw, 4rem)'
+                    fontSize: 'clamp(0.875rem, 1rem + 0.25vw, 1.25rem)',
+                    padding: 'clamp(0.75rem, 1rem + 0.15vw, 1.25rem) clamp(1.5rem, 2rem + 0.5vw, 2.5rem)',
+                    minHeight: 'clamp(3rem, 3.5rem + 0.5vw, 4rem)'
                   }}
                 >
                   SIGN UP
