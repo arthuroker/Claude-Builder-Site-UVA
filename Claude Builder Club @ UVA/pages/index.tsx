@@ -44,7 +44,7 @@ export default function Home() {
       const timer = setTimeout(() => {
         setDisplayedText('')
         setCurrentTextIndex((prev) => (prev + 1) % benefits.length)
-      }, 2500)
+      }, 1750)
       return () => clearTimeout(timer)
     }
   }, [displayedText, currentTextIndex, benefits])
