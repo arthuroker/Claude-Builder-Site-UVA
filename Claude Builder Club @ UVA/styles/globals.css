@@ -204,7 +204,7 @@
     transform: translateX(-50%);
     z-index: 15;
     opacity: 0;
-    animation: fadeInBounce 2s ease-out 1s forwards;
+    animation: fadeInBounce 3s ease-out 1s forwards;
   }
   
   .scroll-progress {
