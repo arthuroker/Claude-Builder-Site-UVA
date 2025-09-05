@@ -401,16 +401,16 @@ export default function Home() {
             {/* Step Card Template - Reusable */}
             {[
               {
-                step: '1',
-                label: 'SIGN UP BELOW',
                 href: 'https://forms.gle/LafYSKUpgsUFzvXB9',
-                cta: 'SIGN UP',
                 show: showStep1,
               },
-            ].map(({ step, label, href, cta, show }, i) => (
-              <div
+            ].map(({ href, show }, i) => (
+              <a
                 key={i}
-                className={`rounded-3xl text-center flex flex-col justify-between flex-1 relative transition-all duration-700 ${
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`rounded-3xl text-center flex flex-col justify-between flex-1 relative transition-all duration-700 hover:scale-[1.02] cursor-pointer ${
                   show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
                 }`}
                 style={{
@@ -419,60 +419,46 @@ export default function Home() {
                   padding: 'clamp(1.5rem, 2.5vw, 2.5rem)',
                 }}
               >
-                {/* Top - Number and Text with proper spacing */}
-                <div className="flex flex-col items-center space-y-6 pt-2">
+                {/* Top - Large Sign Up Text */}
+                <div className="flex flex-col items-center justify-center flex-1 pt-2">
                   <h3
-                    className="font-bold font-work-sans leading-tight"
+                    className="font-bold font-work-sans leading-tight text-center"
                     style={{
                       color: '#191919',
                       fontSize: 'clamp(2.5rem, 5vw, 4rem)',
                     }}
                   >
-                    {step}
+                    SIGN UP BELOW
                   </h3>
-                  <p
-                    className="font-work-sans leading-tight tracking-tight"
-                    style={{
-                      color: '#191919',
-                      fontSize: 'clamp(1rem, 1.5vw, 1.5rem)',
-                    }}
-                  >
-                    {label}
-                  </p>
                 </div>
 
-                {/* Middle - Button with proper vertical spacing */}
-                <div className="flex justify-center py-8">
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-xl font-medium font-work-sans hover:scale-[1.03] transition-all duration-300 touch-target flex items-center justify-center"
-                    style={{
-                      backgroundColor: '#d4a27f',
-                      color: '#191919',
-                      fontSize: 'clamp(0.875rem, 1.25vw, 1.25rem)',
-                      padding: 'clamp(0.75rem, 1.5vw, 1.25rem) clamp(1.5rem, 2.5vw, 2.5rem)',
-                      minHeight: 'clamp(3rem, 4vw, 4rem)',
-                    }}
-                  >
-                    {cta}
-                  </a>
-                </div>
-
-                {/* Bottom - GIF with proper spacing */}
-                <div className="flex justify-center pb-2">
+                {/* Bottom - Pulsating GIF with Floating Arrow */}
+                <div className="flex justify-center pb-2 relative">
                   <img
                     src="/assets/animations/claude point.gif"
                     alt="Claude Point"
-                    className="object-contain rounded-2xl"
+                    className="object-contain rounded-2xl animate-scale-pulse hover:animate-none"
                     style={{
                       width: 'clamp(6rem, 8vw, 9rem)',
                       height: 'clamp(6rem, 8vw, 9rem)',
                     }}
                   />
+                  {/* Floating Arrow pointing to GIF */}
+                  <div 
+                    className="absolute animate-bounce"
+                    style={{
+                      top: '-4rem',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      fontSize: 'clamp(1.5rem, 2.5vw, 2.5rem)',
+                      color: '#191919',
+                      opacity: 0.7
+                    }}
+                  >
+                    ↓
+                  </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>

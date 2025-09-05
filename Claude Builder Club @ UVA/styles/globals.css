@@ -257,6 +257,19 @@
   .animate-gentle-bounce {
     animation: gentleBounce 2s ease-in-out infinite;
   }
+
+  @keyframes scalePulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+  
+  .animate-scale-pulse {
+    animation: scalePulse 2s ease-in-out infinite;
+  }
   
   /* Reduce motion for users who prefer it */
   @media (prefers-reduced-motion: reduce) {
@@ -287,6 +300,10 @@
     }
     
     .animate-gentle-bounce {
+      animation: none !important;
+    }
+    
+    .animate-scale-pulse {
       animation: none !important;
     }
     
